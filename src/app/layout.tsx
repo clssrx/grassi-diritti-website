@@ -33,7 +33,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
 
         <div className="min-h-screen flex flex-col">
           <div className="flex-1">
-            <div className="max-w-7xl mx-auto px-4 py-24 sm:py-28">
+            <div className="max-w-7xl mx-auto px-4 py-12 sm:py-28">
               {children}
             </div>
           </div>
