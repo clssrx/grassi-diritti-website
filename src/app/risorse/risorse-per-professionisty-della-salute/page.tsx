@@ -1,0 +1,50 @@
+const title = "Risorse per professionisty della salute";
+
+const subtitle =
+  "Se sei unə professionista della salute, qua puoi trovare tutte le risorse create da e per la comunità grassa.";
+
+const resourcesList = [
+  "Consenso Informato sugli Agonisti del GLP-1, qui. Puoi scaricalo qui",
+  "Leggi il nostro report su grassezza e aborto in collaborazione con aborto in pillole e women help women qui. ",
+  `Puoi scaricare le nostre guide dal report su grassezza e aborto in collaborazione con aborto in pilolle e women help women:
+
+        - Guida per persone grasse
+
+        - Guida per personale medico e accompagnanti
+
+        - Guida per organizzazioni che si occupano di giustizia riproduttiva
+`,
+  `Cliccando su questo link potrai accedere alla guida “Abbattere
+le barriere. Affrontare fertilità e gravidanza in un corpo grasso”
+creata da Nicola Salmon e Grassi Diritti`,
+
+  `
+    Cliccando su questo link potrai accedere al verbale redatto
+dopo un’assemblea pubblica sull’approvazione della legge ddl
+pella. Qui puoi accedere al riassunto pubblicato su instagram.`,
+
+  `
+  liccando su questo link potrai accedere ad una lista di
+professionisty del movimento non grassofobici creata da
+marianna the influenza.`,
+];
+
+export default function RisorsePerProfessionist3Page() {
+  return (
+    <main className="flex flex-col gap-6">
+      <h1 className="text-3xl md:text-7xl font-bold">{title}</h1>
+
+      <p className=" text-lg">{subtitle}</p>
+
+      <h2 className="text-xl font-bold">Lista risorse:</h2>
+
+      <ul className="flex flex-col gap-2">
+        {resourcesList.map((resource, index) => (
+          <li key={index}>
+            <span className="text-lg">• {resource}</span>
+          </li>
+        ))}
+      </ul>
+    </main>
+  );
+}

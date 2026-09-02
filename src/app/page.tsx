@@ -7,7 +7,7 @@ const description =
 export default function Home() {
   return (
     <main className="py-0 sm:py-8">
-      <section className="grid gap-8 md:grid-cols-[minmax(0,1fr)_auto] md:max-w-7xl">
+      <section className="grid gap-4 sm:gap-8 md:grid-cols-[minmax(0,1fr)_auto] md:max-w-7xl">
         <div>
           <h1 className="line-clamp-2 text-[clamp(3.5rem,16vw,9rem)] font-semibold leading-[0.8] tracking-[-0.065em] ">
             {title}
@@ -17,14 +17,14 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="w-28 justify-self-end sm:w-32 md:w-32 md:justify-self-start lg:w-53 xl:w-60">
+        <div className="w-30 justify-self-end sm:w-32 md:w-32 md:justify-self-start lg:w-53 xl:w-60">
           <Image
-            src="/circle-ring-svgrepo-com.svg"
+            src="/logo-grassi-diritti.png"
             alt="grassi diritti logo"
             width="300"
             height="300"
-            color="black"
-            className="h-auto w-full rounded-full"
+            className="h-auto w-full rounded"
+            loading="lazy"
           />
         </div>
       </section>

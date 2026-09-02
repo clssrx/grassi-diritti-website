@@ -77,10 +77,12 @@ const resourcesList = [
     vestiti consigliati da e per persone grasse.`,
 ];
 
-export default function RisorsePage() {
+const title = "Risorse per persone grasse";
+
+export default function RisorsePerPersoneGrassePage() {
   return (
     <main className="flex flex-col gap-6">
-      <h1 className="text-7xl font-bold">Risorse</h1>
+      <h1 className="text-3xl md:text-7xl font-bold">{title}</h1>
 
       <p className=" text-lg">
         Se sei una persona grassa, qua puoi trovare tutte le risorse create da e
