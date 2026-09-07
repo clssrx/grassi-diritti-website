@@ -7,6 +7,7 @@ import { useState } from "react";
 type NavChild = {
   slug: string;
   text: string;
+  isActive?: boolean;
 };
 
 type NavLink = {
@@ -130,7 +131,7 @@ export default function MobileNavbar({ isHome, navLinks }: MobileNavbarProps) {
                           <li key={child.slug} className="">
                             <Link
                               href={`/${navLink.slug}/${child.slug}`}
-                              className="block px-10 py-2 text-2xl"
+                              className={`block px-10 py-2 text-2xl ${child.isActive ? "color-inverse" : "bg-transparent"}`}
                               onClick={closeMenu}
                             >
                               {child.text}

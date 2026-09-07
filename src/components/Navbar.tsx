@@ -17,6 +17,10 @@ export const navLinks = [
         slug: "risorse-per-professionisty-della-salute",
         text: "Per professionisty della salute",
       },
+      {
+        slug: "english-resources",
+        text: "EN - Resources",
+      },
     ],
   },
   { slug: "blog", text: "Blog" },
@@ -30,6 +34,15 @@ export default function Navbar() {
   const isHome = pathname === "/";
 
   const navLinksList = navLinks.map((navLink) => {
+    if (navLink.children) {
+      navLink.children = navLink.children.map((child) => {
+        return {
+          ...child,
+          isActive: pathname.includes(child.slug),
+        };
+      });
+    }
+
     return {
       ...navLink,
       isActive:
@@ -39,7 +52,7 @@ export default function Navbar() {
   });
 
   return (
-    <header className="sticky top-0 z-50 ">
+    <header className="sticky top-0 z-50">
       <MobileNavbar isHome={isHome} navLinks={navLinksList} />
       <DesktopNavbar isHome={isHome} navLinks={navLinksList} />
     </header>

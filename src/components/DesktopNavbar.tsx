@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 type NavChild = {
   slug: string;
   text: string;
+  isActive?: boolean;
 };
 
 type NavLink = {
@@ -140,7 +141,7 @@ export default function DesktopNavbar({
                           <Link
                             key={child.slug}
                             href={`/${navLink.slug}/${child.slug}`}
-                            className="text-lg  hover:underline"
+                            className={`text-lg  hover:underline ${child.isActive ? "font-bold" : "bg-transparent"}"`}
                             onClick={() => setOpenDropdown(null)}
                           >
                             * {child.text}
