@@ -48,3 +48,9 @@ footer {
   background-color: var(--color-2);
   color: var(--color-foreground);
 }
+
+:focus-visible {
+  outline: 2px solid var(--color-3);
+  outline-offset: 4px;
+  border-radius: 8px;
+}

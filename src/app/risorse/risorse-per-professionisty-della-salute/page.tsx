@@ -31,20 +31,27 @@ marianna the influenza.`,
 
 export default function RisorsePerProfessionist3Page() {
   return (
-    <main className="flex flex-col gap-6">
-      <h1 className="text-3xl md:text-7xl font-bold">{title}</h1>
+    <main className="flex flex-col gap-6 max-w-5xl mx-auto py-8 md:gap-14 md:py-12">
+      <header className="flex flex-col gap-5">
+        <h1 className="text-3xl md:text-6xl font-bold">{title}</h1>
 
-      <p className=" text-lg">{subtitle}</p>
+        <p className="text-xl sm:text-2xl">{subtitle}</p>
+      </header>
 
-      <h2 className="text-xl font-bold">Lista risorse:</h2>
+      <section className="flex flex-col gap-6 ">
+        <h2 className="text-xl sm:text-3xl font-bold">Lista risorse:</h2>
 
-      <ul className="flex flex-col gap-2">
-        {resourcesList.map((resource, index) => (
-          <li key={index}>
-            <span className="text-lg">• {resource}</span>
-          </li>
-        ))}
-      </ul>
+        <ul className="flex flex-col gap-6 text-justify">
+          {resourcesList.map((resource, index) => (
+            <li key={index}>
+              <div className="flex flex-row text-xl sm:text-2xl leading-relaxed gap-4">
+                <span>✸</span>
+                <span>{resource}</span>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
     </main>
   );
 }

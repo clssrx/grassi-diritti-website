@@ -6,7 +6,7 @@ const description =
 
 export default function Home() {
   return (
-    <main className="py-0 sm:py-8">
+    <main className="py-8 sm:py-20">
       <section className="grid gap-4 sm:gap-8 md:grid-cols-[minmax(0,1fr)_auto] md:max-w-7xl">
         <div>
           <h1 className="line-clamp-2 text-[clamp(3.5rem,16vw,9rem)] font-semibold leading-[0.8] tracking-[-0.065em] ">

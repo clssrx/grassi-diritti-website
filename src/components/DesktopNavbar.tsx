@@ -89,9 +89,9 @@ export default function DesktopNavbar({
                   <>
                     <button
                       type="button"
-                      className={`flex items-center text-xl pl-2 py-2 hover:bg-[#ff82cf] ${
+                      className={`flex items-center text-xl pl-2 py-2 hover:bg-[#ff82cf] cursor-pointer ${
                         isDropdownOpen || navLink.isActive
-                          ? "color-inverse"
+                          ? "color-inverse "
                           : "bg-transparent"
                       } 
                     
@@ -131,20 +131,15 @@ export default function DesktopNavbar({
                     </button>
 
                     {isDropdownOpen && (
-                      <div
-                        className="absolute left-3/3 top-14 z-20 flex flex-col gap-2 items-start h-fit p-3 min-w-70 -translate-x-1/2 text-center color-inverse shadow-lg "
-                        style={{
-                          gridTemplateColumns: `repeat(${navLink.children.length}, minmax(0, 1fr))`,
-                        }}
-                      >
+                      <div className="absolute left-full top-14 z-20 flex w-max -translate-x-1/2 flex-col items-start gap-2 p-3 color-inverse shadow-lg">
                         {navLink.children.map((child) => (
                           <Link
                             key={child.slug}
                             href={`/${navLink.slug}/${child.slug}`}
-                            className={`text-lg  hover:underline ${child.isActive ? "font-bold" : "bg-transparent"}"`}
+                            className={`text-lg hover:underline ${child.isActive ? "font-bold" : ""}`}
                             onClick={() => setOpenDropdown(null)}
                           >
-                            * {child.text}
+                            ✸ {child.text}
                           </Link>
                         ))}
                       </div>

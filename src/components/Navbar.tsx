@@ -19,7 +19,7 @@ export const navLinks = [
       },
       {
         slug: "english-resources",
-        text: "EN - Resources",
+        text: "[EN] Resources",
       },
     ],
   },
