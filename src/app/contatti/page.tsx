@@ -11,7 +11,7 @@ const instagram = {
 
 export default function ContattiPage() {
   return (
-    <main className="flex flex-col gap-6 max-w-5xl mx-auto py-8 md:gap-14 md:py-12">
+    <main className="flex flex-col gap-6 max-w-6xl mx-auto py-8 md:gap-8 md:py-12">
       <header className="flex flex-col gap-5">
         <h1 className="text-3xl md:text-6xl font-bold">{title}</h1>
 
@@ -19,19 +19,25 @@ export default function ContattiPage() {
       </header>
 
       <section>
-        <ul className="flex flex-col list-disc px-6 gap-8">
-          <li className="text-xl sm:text-2xl">
-            Scrivici una mail a{" "}
-            <Link href={`mailto:${mail}`} className="font-bold">
-              {mail}
-            </Link>
+        <ul className="flex flex-col px-6 gap-8">
+          <li className="flex flex-row text-xl sm:text-2xl leading-relaxed gap-4">
+            <span>✸</span>
+            <span>
+              Scrivici una mail a{" "}
+              <Link href={`mailto:${mail}`} className="font-bold">
+                {mail}
+              </Link>
+            </span>
           </li>
 
-          <li className="text-xl sm:text-2xl">
-            Segui il nostro profilo Instagram{" "}
-            <Link href={instagram.link} className="font-bold">
-              {instagram.username}
-            </Link>
+          <li className="flex flex-row text-xl sm:text-2xl leading-relaxed gap-4">
+            <span>✸</span>
+            <span>
+              Segui il nostro profilo Instagram{" "}
+              <Link href={instagram.link} className="font-bold">
+                {instagram.username}
+              </Link>
+            </span>
           </li>
         </ul>
       </section>

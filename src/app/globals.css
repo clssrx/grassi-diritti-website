@@ -12,6 +12,7 @@
   --color-1: #c5f1b4;
   --color-2: #ff82cf;
   --color-3: #f67bab;
+  --color-4: #e2437e;
 }
 
 @theme inline {
@@ -53,7 +54,11 @@ footer {
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-3);
+  outline: 2px solid #e2437e;
   outline-offset: 4px;
   border-radius: 8px;
+}
+
+::selection {
+  background: var(--color-1);
 }
