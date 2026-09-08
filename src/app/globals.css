@@ -44,9 +44,12 @@ footer {
   background: var(--color-background);
 }
 
-.color-inverse {
+.gd-pink-bg {
   background-color: var(--color-2);
-  color: var(--color-foreground);
+}
+
+.gd-acid-green-bg {
+  background-color: var(--color-1);
 }
 
 :focus-visible {

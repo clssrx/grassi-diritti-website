@@ -96,7 +96,7 @@ export default function MobileNavbar({ isHome, navLinks }: MobileNavbarProps) {
                     <button
                       type="button"
                       className={`flex min-h-14 w-full items-center gap-2 px-5 py-4 text-left text-3xl ${
-                        navLink.isActive ? "color-inverse" : "bg-transparent"
+                        navLink.isActive ? "gd-pink-bg" : "bg-transparent"
                       }`}
                       aria-expanded={isDropdownOpen}
                       onClick={() =>
@@ -111,7 +111,7 @@ export default function MobileNavbar({ isHome, navLinks }: MobileNavbarProps) {
                         viewBox="0 0 24 24"
                         fill="none"
                         stroke="currentColor"
-                        className={`h-6 w-6 transition-transform duration-200 ${
+                        className={`h-6 w-6 transition-transform duration-200 gd-acid-green-bg ${
                           isDropdownOpen ? "rotate-180" : ""
                         }`}
                         aria-hidden="true"
@@ -126,12 +126,16 @@ export default function MobileNavbar({ isHome, navLinks }: MobileNavbarProps) {
                     </button>
 
                     {isDropdownOpen && (
-                      <ul className=" ">
+                      <ul className="flex flex-col ml-10 mb-4 max-w-fit gap-4 gd-acid-green-bg p-2">
                         {navLink.children.map((child) => (
-                          <li key={child.slug} className="">
+                          <li
+                            key={child.slug}
+                            className="flex flex-row  items-start text-2xl gap-2"
+                          >
+                            <span>✸</span>
                             <Link
                               href={`/${navLink.slug}/${child.slug}`}
-                              className={`block px-10 py-2 text-2xl ${child.isActive ? "color-inverse" : "bg-transparent"}`}
+                              className={` ${child.isActive ? "underline" : "bg-transparent"}`}
                               onClick={closeMenu}
                             >
                               {child.text}
@@ -145,7 +149,9 @@ export default function MobileNavbar({ isHome, navLinks }: MobileNavbarProps) {
                   <Link
                     href={`/${navLink.slug}`}
                     className={`block min-h-14 px-5 py-4 text-3xl font-semibold ${
-                      navLink.isActive ? "color-inverse" : "bg-transparent"
+                      navLink.isActive
+                        ? "gd-pink-bg underline"
+                        : "bg-transparent"
                     }`}
                     onClick={closeMenu}
                   >

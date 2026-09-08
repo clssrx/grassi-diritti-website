@@ -89,9 +89,9 @@ export default function DesktopNavbar({
                   <>
                     <button
                       type="button"
-                      className={`flex items-center text-xl pl-2 py-2 hover:bg-[#ff82cf] cursor-pointer ${
+                      className={`flex items-center text-xl pl-2 py-2 hover:bg-[#ff82cf] hover:underline cursor-pointer ${
                         isDropdownOpen || navLink.isActive
-                          ? "color-inverse "
+                          ? "gd-pink-bg underline"
                           : "bg-transparent"
                       } 
                     
@@ -107,7 +107,7 @@ export default function DesktopNavbar({
 
                       <span
                         className={`flex h-6 w-6 items-center justify-center transition-colors  
-                          ${isDropdownOpen ? "color-inverse" : "bg-transparent"}
+                          ${isDropdownOpen ? "gd-pink-bg" : "bg-transparent"}
                           
                           `}
                       >
@@ -131,16 +131,21 @@ export default function DesktopNavbar({
                     </button>
 
                     {isDropdownOpen && (
-                      <div className="absolute left-full top-14 z-20 flex w-max -translate-x-1/2 flex-col items-start gap-2 p-3 color-inverse shadow-lg">
+                      <div className="absolute left-full top-14 z-20 flex w-max -translate-x-1/2 flex-col items-start gap-2 p-3 gd-pink-bg  shadow-lg">
                         {navLink.children.map((child) => (
-                          <Link
+                          <div
                             key={child.slug}
-                            href={`/${navLink.slug}/${child.slug}`}
-                            className={`text-lg hover:underline ${child.isActive ? "font-bold" : ""}`}
-                            onClick={() => setOpenDropdown(null)}
+                            className="flex flex-row gap-2 items-center"
                           >
-                            ✸ {child.text}
-                          </Link>
+                            <span>✸</span>
+                            <Link
+                              href={`/${navLink.slug}/${child.slug}`}
+                              className={`text-lg hover:underline ${child.isActive ? "font-bold underline" : ""}`}
+                              onClick={() => setOpenDropdown(null)}
+                            >
+                              {child.text}
+                            </Link>
+                          </div>
                         ))}
                       </div>
                     )}
@@ -148,8 +153,10 @@ export default function DesktopNavbar({
                 ) : (
                   <Link
                     href={`/${navLink.slug}`}
-                    className={`text-xl p-2 hover:bg-[#ff82cf] ${
-                      navLink.isActive ? "color-inverse " : "bg-transparent"
+                    className={`text-xl p-2 hover:bg-[#ff82cf] hover:underline ${
+                      navLink.isActive
+                        ? "gd-pink-bg underline underline-offset-2"
+                        : "bg-transparent"
                     }`}
                     onClick={() => setOpenDropdown(null)}
                   >
