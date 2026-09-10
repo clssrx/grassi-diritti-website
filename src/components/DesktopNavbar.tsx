@@ -59,17 +59,17 @@ export default function DesktopNavbar({
   }, [openDropdown]);
 
   return (
-    <div className="hidden md:block py-4">
+    <div className="hidden md:block py-2">
       {/* Main navbar */}
-      <nav className="mx-auto flex h-16 max-w-7xl items-center px-4 py-4">
+      <nav className="mx-auto flex max-h-fit max-w-7xl items-center">
         {!isHome && (
           <Link href="/" className="whitespace-nowrap font-bold text-heading">
             <div className="flex flex-row justify-center items-center gap-2">
               <Image
                 src={"/logo-grassi-diritti.png"}
                 alt="logo grassi diritti"
-                width={80}
-                height={80}
+                width={50}
+                height={50}
               />
             </div>
           </Link>
@@ -91,7 +91,7 @@ export default function DesktopNavbar({
                       type="button"
                       className={`flex items-center text-xl pl-2 py-2 hover:bg-[#ff82cf] hover:underline cursor-pointer ${
                         isDropdownOpen || navLink.isActive
-                          ? "gd-pink-bg underline"
+                          ? "gd-pink-bg "
                           : "bg-transparent"
                       } 
                     
@@ -140,7 +140,7 @@ export default function DesktopNavbar({
                             <span>✸</span>
                             <Link
                               href={`/${navLink.slug}/${child.slug}`}
-                              className={`text-lg hover:underline ${child.isActive ? "font-bold underline" : ""}`}
+                              className={`text-lg hover:underline ${child.isActive ? "font-bold" : ""}`}
                               onClick={() => setOpenDropdown(null)}
                             >
                               {child.text}
@@ -154,9 +154,7 @@ export default function DesktopNavbar({
                   <Link
                     href={`/${navLink.slug}`}
                     className={`text-xl p-2 hover:bg-[#ff82cf] hover:underline ${
-                      navLink.isActive
-                        ? "gd-pink-bg underline underline-offset-2"
-                        : "bg-transparent"
+                      navLink.isActive ? "gd-pink-bg " : "bg-transparent"
                     }`}
                     onClick={() => setOpenDropdown(null)}
                   >

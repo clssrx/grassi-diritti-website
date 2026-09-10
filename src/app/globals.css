@@ -9,10 +9,12 @@
   --navbar: #eeffdb;
   --accent: #c8b6ff;
 
-  --color-1: #c5f1b4;
-  --color-2: #ff82cf;
-  --color-3: #f67bab;
-  --color-4: #e2437e;
+  --color-green-gd: #c5f1b4;
+  --color-pink-gd: #ff82cf;
+  --color-salmon-pink-gd: #f67bab;
+  --color-dark-pink-gd: #e2437e;
+
+  --color-paper: #f6eee3;
 }
 
 @theme inline {
@@ -42,23 +44,23 @@ body {
 header,
 nav,
 footer {
-  background: var(--color-background);
+  background: inherit;
 }
 
 .gd-pink-bg {
-  background-color: var(--color-2);
+  background-color: var(--color-pink-gd);
 }
 
 .gd-acid-green-bg {
-  background-color: var(--color-1);
+  background-color: var(--color-green-gd);
 }
 
 :focus-visible {
-  outline: 2px solid #e2437e;
+  outline: 2px solid var(--color-dark-pink-gd);
   outline-offset: 4px;
   border-radius: 8px;
 }
 
 ::selection {
-  background: var(--color-1);
+  background: var(--color-green-gd);
 }

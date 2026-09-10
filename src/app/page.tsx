@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const title = "Grassi Diritti";
 const description =
-  "Siamo una collettiva dal basso di ricerca-azione per la salute e laliberazione delle persone grasse. Adottiamo pratiche e politiche di liberazione del corpo grasso.";
+  "Siamo una collettiva dal basso di ricerca-azione per la salute e la liberazione delle persone grasse. Adottiamo pratiche e politiche di liberazione del corpo grasso.";
 
 const news = [
   {
@@ -51,13 +51,16 @@ export default function Home() {
         aria-labelledby="news-heading"
         className="flex flex-col gap-8 bo"
       >
-        <h2 className="text-4xl font-bold" id="news-heading">
+        <h2 className="text-2xl md:text-4xl font-bold" id="news-heading">
           Novità di questo mese:
         </h2>
 
         <ul className="flex flex-col gap-6">
           {news.map((n) => (
-            <li key={n.date} className="text-2xl flex flex-row gap-4">
+            <li
+              key={n.date}
+              className="text-xl md:text-2xl flex flex-row gap-4"
+            >
               <span>✸</span>
               <span>{n.text}</span>
             </li>

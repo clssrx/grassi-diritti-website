@@ -11,7 +11,7 @@ const instagram = {
 
 export default function ContattiPage() {
   return (
-    <main className="flex flex-col gap-6 max-w-6xl mx-auto py-8 md:gap-8 md:py-12">
+    <main className="flex flex-col gap-6 max-w-6xl mx-auto py-8 md:gap-8 md:py-8">
       <header className="flex flex-col gap-5">
         <h1 className="text-3xl md:text-6xl font-bold">{title}</h1>
 

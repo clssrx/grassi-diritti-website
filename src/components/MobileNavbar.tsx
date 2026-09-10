@@ -85,7 +85,7 @@ export default function MobileNavbar({ isHome, navLinks }: MobileNavbarProps) {
       </button>
 
       {isOpen && (
-        <ul className="fixed inset-x-0 bottom-0 top-14 overflow-y-auto bg-inherit px-4 py-5 font-semibold mobile-navbar">
+        <ul className="fixed inset-x-0 bottom-0 top-14 overflow-y-auto bg-inherit px-4 py-5  mobile-navbar">
           {navLinks.map((navLink) => {
             const isDropdownOpen = openDropdown === navLink.slug;
 
@@ -96,7 +96,7 @@ export default function MobileNavbar({ isHome, navLinks }: MobileNavbarProps) {
                     <button
                       type="button"
                       className={`flex min-h-14 w-full items-center gap-2 px-5 py-4 text-left text-3xl ${
-                        navLink.isActive ? "gd-pink-bg" : "bg-transparent"
+                        navLink.isActive ? "gd-acid-green-bg" : "bg-transparent"
                       }`}
                       aria-expanded={isDropdownOpen}
                       onClick={() =>
@@ -111,7 +111,7 @@ export default function MobileNavbar({ isHome, navLinks }: MobileNavbarProps) {
                         viewBox="0 0 24 24"
                         fill="none"
                         stroke="currentColor"
-                        className={`h-6 w-6 transition-transform duration-200 gd-acid-green-bg ${
+                        className={`h-6 w-6 transition-transform duration-200 gd-pink-bg ${
                           isDropdownOpen ? "rotate-180" : ""
                         }`}
                         aria-hidden="true"
@@ -126,7 +126,7 @@ export default function MobileNavbar({ isHome, navLinks }: MobileNavbarProps) {
                     </button>
 
                     {isDropdownOpen && (
-                      <ul className="flex flex-col ml-10 mb-4 max-w-fit gap-4 gd-acid-green-bg p-2">
+                      <ul className="flex flex-col ml-10 mb-4 max-w-fit gap-4 gd-pink-bg p-2">
                         {navLink.children.map((child) => (
                           <li
                             key={child.slug}
@@ -135,7 +135,7 @@ export default function MobileNavbar({ isHome, navLinks }: MobileNavbarProps) {
                             <span>✸</span>
                             <Link
                               href={`/${navLink.slug}/${child.slug}`}
-                              className={` ${child.isActive ? "underline" : "bg-transparent"}`}
+                              className={` ${child.isActive ? "font-bold" : "bg-transparent"}`}
                               onClick={closeMenu}
                             >
                               {child.text}
@@ -148,9 +148,9 @@ export default function MobileNavbar({ isHome, navLinks }: MobileNavbarProps) {
                 ) : (
                   <Link
                     href={`/${navLink.slug}`}
-                    className={`block min-h-14 px-5 py-4 text-3xl font-semibold ${
+                    className={`block min-h-14 px-5 py-4 text-3xl ${
                       navLink.isActive
-                        ? "gd-pink-bg underline"
+                        ? "gd-acid-green-bg underline"
                         : "bg-transparent"
                     }`}
                     onClick={closeMenu}

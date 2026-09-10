@@ -73,7 +73,7 @@ const subtitle =
 
 export default function ArchivioPage() {
   return (
-    <main className="flex flex-col gap-6 max-w-6xl mx-auto py-8 md:gap-14 md:py-12">
+    <main className="flex flex-col gap-6 max-w-6xl mx-auto py-8 md:gap-14 md:py-8">
       <header className="flex flex-col gap-5">
         <h1 className="text-3xl md:text-6xl font-bold">{title}</h1>
 
@@ -82,7 +82,7 @@ export default function ArchivioPage() {
 
       {Object.entries(archiveData).map(([year, items]) => (
         <section key={year} className="flex flex-col gap-6">
-          <h2 className="text-3xl font-bold gd-acid-green-bg max-w-fit p-2">
+          <h2 className="text-3xl font-bold bg-(--color-green-gd) max-w-fit p-2">
             {year}
           </h2>
 
@@ -90,7 +90,7 @@ export default function ArchivioPage() {
             {items.map((item) => (
               <li
                 key={item.id}
-                className="text-xl sm:text-2xl border-b-2 border-[#f67bab] p-2"
+                className="text-xl sm:text-2xl border-b-2 border-(--color-salmon-pink-gd) p-2"
               >
                 <div className="flex flex-row text-xl sm:text-2xl leading-relaxed gap-4">
                   <span>✸</span>
