@@ -67,10 +67,11 @@ type BlogPostProps = {
 
 function BlogPost({ title, slug }: BlogPostProps) {
   return (
-    <div className="border max-w-fit p-8 max-h-fit flex flex-col items-start gap-4 bg-(--color-paper) shadow-md ">
-      <div className="h-43 w-63 border"></div>
-      <h2 className="font-bold text-lg">{title}</h2>
-
+    <div className="border max-w-fit p-8 max-h-fit flex flex-col items-center md:items-start gap-4 bg-(--color-paper) shadow-md ">
+      <div className="flex flex-col w-full gap-4 items-center">
+        <div className="h-60 border w-full"></div>
+        <h2 className="font-bold text-lg">{title}</h2>
+      </div>
       <Link
         href={`/blog/${slug}`}
         className="p-2 bg-(--color-pink-gd) hover:bg-(--color-green-gd) self-end shadow-sm"
