@@ -15,6 +15,38 @@
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
 // Source: src/sanity/extract.json
+export type ResourcePage = {
+  _id: string;
+  _type: "resourcePage";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  subtitle: string;
+  resources: Array<{
+    content: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "normal";
+      listItem?: "bullet";
+      markDefs?: Array<{
+        href: string;
+        _type: "link";
+        _key: string;
+      }>;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }>;
+    _type: "resourceItem";
+    _key: string;
+  }>;
+};
+
 export type SanityImageAssetReference = {
   _ref: string;
   _type: "reference";
@@ -76,128 +108,6 @@ export type SanityImageHotspot = {
   y: number;
   height: number;
   width: number;
-};
-
-export type AuthorReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "author";
-};
-
-export type CategoryReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "category";
-};
-
-export type Post = {
-  _id: string;
-  _type: "post";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title?: string;
-  slug?: Slug;
-  author?: AuthorReference;
-  mainImage?: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
-  };
-  categories?: Array<
-    {
-      _key: string;
-    } & CategoryReference
-  >;
-  publishedAt?: string;
-  body?: BlockContent;
-};
-
-export type BlockContent = Array<
-  | {
-      children?: Array<{
-        marks?: Array<string>;
-        text?: string;
-        _type: "span";
-        _key: string;
-      }>;
-      style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote";
-      listItem?: "bullet";
-      markDefs?: Array<{
-        href?: string;
-        _type: "link";
-        _key: string;
-      }>;
-      level?: number;
-      _type: "block";
-      _key: string;
-    }
-  | {
-      asset?: SanityImageAssetReference;
-      media?: unknown;
-      hotspot?: SanityImageHotspot;
-      crop?: SanityImageCrop;
-      alt?: string;
-      _type: "image";
-      _key: string;
-    }
->;
-
-export type Author = {
-  _id: string;
-  _type: "author";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  name?: string;
-  slug?: Slug;
-  image?: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  };
-  bio?: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "normal";
-    listItem?: never;
-    markDefs?: Array<{
-      href?: string;
-      _type: "link";
-      _key: string;
-    }>;
-    level?: number;
-    _type: "block";
-    _key: string;
-  }>;
-};
-
-export type Slug = {
-  _type: "slug";
-  current: string;
-  source?: string;
-};
-
-export type Category = {
-  _id: string;
-  _type: "category";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title?: string;
-  slug?: Slug;
-  description?: string;
 };
 
 export type SanityImagePaletteSwatch = {
@@ -297,18 +207,18 @@ export type Geopoint = {
   alt?: number;
 };
 
+export type Slug = {
+  _type: "slug";
+  current: string;
+  source?: string;
+};
+
 export type AllSanitySchemaTypes =
+  | ResourcePage
   | SanityImageAssetReference
   | HomepageSettings
   | SanityImageCrop
   | SanityImageHotspot
-  | AuthorReference
-  | CategoryReference
-  | Post
-  | BlockContent
-  | Author
-  | Slug
-  | Category
   | SanityImagePaletteSwatch
   | SanityImagePalette
   | SanityImageDimensions
@@ -316,7 +226,8 @@ export type AllSanitySchemaTypes =
   | SanityFileAsset
   | SanityAssetSourceData
   | SanityImageAsset
-  | Geopoint;
+  | Geopoint
+  | Slug;
 
 // Source: src/sanity/queries/homePage.ts
 // Variable: HOME_PAGE_SETTINGS_QUERY
@@ -355,10 +266,40 @@ export type HOME_PAGE_SETTINGS_QUERY_RESULT = {
   }> | null;
 } | null;
 
+// Source: src/sanity/queries/resourcePage.ts
+// Variable: RESOURCE_PAGE_QUERY
+// Query: *[    _type == "resourcePage" &&    _id == $id  ][0]{    title,    subtitle,    resources[]{      _key,      content    }  }
+export type RESOURCE_PAGE_QUERY_RESULT = {
+  title: string;
+  subtitle: string;
+  resources: Array<{
+    _key: string;
+    content: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "normal";
+      listItem?: "bullet";
+      markDefs?: Array<{
+        href: string;
+        _type: "link";
+        _key: string;
+      }>;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }>;
+  }>;
+} | null;
+
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     '\n  *[\n    _id == "homepageSettings" &&\n    _type == "homepageSettings"\n  ][0]{\n    title,\n    introText,\n    newsTitle,\n    logo,\n    news[]{\n      _key,\n      content\n    }\n  }\n': HOME_PAGE_SETTINGS_QUERY_RESULT;
+    '\n  *[\n    _type == "resourcePage" &&\n    _id == $id\n  ][0]{\n    title,\n    subtitle,\n    resources[]{\n      _key,\n      content\n    }\n  }\n': RESOURCE_PAGE_QUERY_RESULT;
   }
 }
