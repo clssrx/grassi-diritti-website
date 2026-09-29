@@ -91,7 +91,7 @@ export default function RisorsePerPersoneGrassePage() {
       </header>
 
       <section className="flex flex-col gap-6" aria-labelledby="resource-list">
-        <h2 className="text-xl sm:text-2xl font-bold" id="resource-list">
+        <h2 className="text-xl sm:text-3xl font-bold" id="resource-list">
           Lista risorse:
         </h2>
 
