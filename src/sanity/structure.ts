@@ -1,6 +1,19 @@
 import type { StructureResolver } from "sanity/structure";
 
-const SINGLETON_TYPES = ["homepageSettings"];
+const RESOURCE_PAGES = [
+  {
+    id: "resources-fat-people",
+    title: "Per persone grasse",
+  },
+  {
+    id: "resources-health-professionals",
+    title: "Per professionisty della salute",
+  },
+  {
+    id: "resources-english",
+    title: "English resources",
+  },
+] as const;
 
 export const structure: StructureResolver = (S) =>
   S.list()
@@ -15,13 +28,26 @@ export const structure: StructureResolver = (S) =>
             .documentId("homepageSettings"),
         ),
 
-      S.divider(),
+      S.listItem()
+        .title("Risorse")
+        .id("resources")
+        .child(
+          S.list()
+            .title("Risorse")
+            .items(
+              RESOURCE_PAGES.map(({ id, title }) =>
+                S.listItem()
+                  .title(title)
+                  .id(id)
+                  .child(
+                    S.document().schemaType("resourcePage").documentId(id),
+                  ),
+              ),
+            ),
+        ),
 
       ...S.documentTypeListItems().filter(
         (item) =>
-          item.getId() &&
-          !["post", "category", "author", ...SINGLETON_TYPES].includes(
-            item.getId()!,
-          ),
+          !["homepageSettings", "resourcePage"].includes(item.getId() ?? ""),
       ),
     ]);
