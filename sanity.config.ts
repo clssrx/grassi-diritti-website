@@ -13,11 +13,24 @@ import { apiVersion, dataset, projectId } from "./src/sanity/env";
 import { schema } from "./src/sanity/schemaTypes";
 import { structure } from "./src/sanity/structure";
 
+const SINGLETON_TYPES = new Set(["homepageSettings"]);
+
+const SINGLETON_ACTIONS = new Set(["publish", "discardChanges", "restore"]);
+
 export default defineConfig({
   basePath: "/studio",
   projectId,
   dataset,
   schema,
+  document: {
+    newDocumentOptions: (prev) =>
+      prev.filter(({ templateId }) => !SINGLETON_TYPES.has(templateId)),
+
+    actions: (prev, context) =>
+      SINGLETON_TYPES.has(context.schemaType)
+        ? prev.filter(({ action }) => action && SINGLETON_ACTIONS.has(action))
+        : prev,
+  },
   plugins: [
     structureTool({ structure }),
     // Vision is for querying with GROQ from inside the Studio

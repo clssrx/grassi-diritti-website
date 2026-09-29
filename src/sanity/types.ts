@@ -28,17 +28,38 @@ export type HomepageSettings = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  title: string;
-  introText: string;
-  logo: {
+  title?: string;
+  introText?: string;
+  logo?: {
     asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
   };
-  newsTitle: string;
-  news?: Array<string>;
+  newsTitle?: string;
+  news?: Array<{
+    content?: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+      listItem?: "bullet" | "number";
+      markDefs?: Array<{
+        href?: string;
+        _type: "link";
+        _key: string;
+      }>;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }>;
+    _type: "newsItem";
+    _key: string;
+  }>;
 };
 
 export type SanityImageCrop = {
@@ -299,24 +320,45 @@ export type AllSanitySchemaTypes =
 
 // Source: src/sanity/queries/homePage.ts
 // Variable: HOME_PAGE_SETTINGS_QUERY
-// Query: *[_type == 'homepageSettings'][0]{ title, introText, newsTitle, logo }
+// Query: *[    _id == "homepageSettings" &&    _type == "homepageSettings"  ][0]{    title,    introText,    newsTitle,    logo,    news[]{      _key,      content    }  }
 export type HOME_PAGE_SETTINGS_QUERY_RESULT = {
-  title: string;
-  introText: string;
-  newsTitle: string;
+  title: string | null;
+  introText: string | null;
+  newsTitle: string | null;
   logo: {
     asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
-  };
+  } | null;
+  news: Array<{
+    _key: string;
+    content: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+      listItem?: "bullet" | "number";
+      markDefs?: Array<{
+        href?: string;
+        _type: "link";
+        _key: string;
+      }>;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }> | null;
+  }> | null;
 } | null;
 
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    "*[_type == 'homepageSettings'][0]{ title, introText, newsTitle, logo }": HOME_PAGE_SETTINGS_QUERY_RESULT;
+    '\n  *[\n    _id == "homepageSettings" &&\n    _type == "homepageSettings"\n  ][0]{\n    title,\n    introText,\n    newsTitle,\n    logo,\n    news[]{\n      _key,\n      content\n    }\n  }\n': HOME_PAGE_SETTINGS_QUERY_RESULT;
   }
 }
