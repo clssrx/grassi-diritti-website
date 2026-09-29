@@ -1,51 +1,92 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
-import { HomeIcon } from "@sanity/icons/Home";
 
 export const homepageSettingsType = defineType({
   name: "homepageSettings",
-  title: "Impostazioni della Homepage",
+  title: "Homepage settings",
   type: "document",
-  icon: HomeIcon,
+
   fields: [
     defineField({
       name: "title",
       title: "Titolo del sito",
       type: "string",
-      validation: (rule) =>
-        rule.required().error("Inserisci il titolo del sito."),
     }),
+
     defineField({
       name: "introText",
       title: "Introduzione homepage",
-      description:
-        "Breve testo introduttivo mostrato in apertura della homepage.",
       type: "text",
-      rows: 3,
-      validation: (rule) =>
-        rule.required().error("Inserisci testo introduttivo del sito"),
     }),
+
     defineField({
       name: "logo",
       title: "Logo del sito",
       type: "image",
-      options: { hotspot: true },
-      validation: (rule) =>
-        rule.required().error("Inserisci il logo del sito."),
     }),
+
     defineField({
       name: "newsTitle",
       title: "News title",
-      description: "Titolo per la sezione novità del mese",
       type: "string",
-      validation: (rule) =>
-        rule.required().error("Inserisci il titolo della sezione novità."),
+      description: "Titolo per la sezione novità del mese",
     }),
+
     defineField({
       name: "news",
+      title: "News",
       type: "array",
       of: [
         defineArrayMember({
-          type: "string",
+          name: "newsItem",
+          title: "News",
+          type: "object",
+          fields: [
+            defineField({
+              name: "content",
+              title: "Testo",
+              type: "array",
+              of: [
+                defineArrayMember({
+                  type: "block",
+                  marks: {
+                    annotations: [
+                      {
+                        name: "link",
+                        type: "object",
+                        title: "Link",
+                        fields: [
+                          {
+                            name: "href",
+                            type: "string",
+                            title: "URL",
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                }),
+              ],
+            }),
+          ],
+          preview: {
+            select: {
+              content: "content",
+            },
+            prepare({ content }) {
+              const firstBlock = content?.find(
+                (block: { _type?: string }) => block._type === "block",
+              );
+
+              const title =
+                firstBlock?.children
+                  ?.map((child: { text?: string }) => child.text)
+                  .join("") || "News";
+
+              return {
+                title,
+              };
+            },
+          },
         }),
       ],
     }),
