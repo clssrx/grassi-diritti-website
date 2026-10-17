@@ -1,44 +1,47 @@
 import Image from "next/image";
-import Link from "next/link";
+import { notFound } from "next/navigation";
 
-const title = "Ricerca";
-const subtitle =
-  "Se vuoi supporto con la tua ricerca, accademica o meno, su grassezza e corpi grassi, compila il form cliccando sulli'immagine qui sotto.";
+import { urlFor } from "@/sanity/lib/image";
+import { getResearchPageQuery } from "@/sanity/queries/researchPage";
 
-export default function RicercaPage() {
+export default async function RicercaPage() {
+  const data = await getResearchPageQuery();
+
+  if (!data) {
+    notFound();
+  }
+
+  const imageUrl = data.image?.asset
+    ? urlFor(data.image).width(1754).url()
+    : "/ricerca-submission-form.png";
+
   return (
-    <main className="flex flex-col gap-6 max-w-6xl mx-auto py-8 md:gap-14 md:py-8">
+    <main className="mx-auto flex w-full max-w-6xl flex-col gap-6 py-8 md:gap-14">
       <header className="flex flex-col gap-5">
-        <h1 className="text-3xl md:text-6xl font-bold">{title}</h1>
+        <h1 className="text-3xl font-bold leading-tight md:text-6xl">
+          {data.title}
+        </h1>
 
-        <p className="text-xl sm:text-2xl">{subtitle}</p>
+        <p className="text-xl leading-relaxed sm:text-2xl">{data.intro}</p>
       </header>
 
-      <div className="flex mx-auto">
-        <Link
-          href="https://docs.google.com/forms/d/e/1FAIpQLSdqDQ35FdMp_K6nhAHI9GC7hIV6ZAwDLyx3OckZ9ENFIxUO_g/viewform?usp=header"
-          aria-label="Compila il form per segnalare una ricerca"
+      <div className="mx-auto w-full max-w-4xl">
+        <a
+          className="group block rounded-2xl focus-visible:outline-offset-8"
+          href={data.formUrl}
+          aria-label="Apri il modulo Google per richiedere supporto alla ricerca o collaborare con Grassi Diritti"
         >
           <Image
-            src="/ricerca-submission-form.png"
+            className="h-auto w-full rounded-2xl shadow-md transition duration-200 group-hover:-translate-y-1 group-hover:shadow-xl motion-reduce:transition-none motion-reduce:group-hover:translate-y-0"
+            src={imageUrl}
             alt=""
-            width={730}
-            height={655}
+            width={1754}
+            height={1588}
             loading="lazy"
+            sizes="(max-width: 896px) 100vw, 896px"
           />
-        </Link>
+        </a>
       </div>
-
-      {/* <div className="w-full">
-        <iframe
-          src={iframeSource}
-          title="Form"
-          loading="lazy"
-          className="block w-full border-0 h-350 sm:h-312.5 md:h-287.5 lg:h-262.5"
-        >
-          Loading…
-        </iframe>
-      </div> */}
     </main>
   );
 }

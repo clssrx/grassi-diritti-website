@@ -15,6 +15,47 @@
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
 // Source: src/sanity/extract.json
+export type SanityImageAssetReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+};
+
+export type ResearchPage = {
+  _id: string;
+  _type: "researchPage";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  intro: string;
+  formUrl: string;
+  image?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+};
+
+export type SanityImageCrop = {
+  _type: "sanity.imageCrop";
+  top: number;
+  bottom: number;
+  left: number;
+  right: number;
+};
+
+export type SanityImageHotspot = {
+  _type: "sanity.imageHotspot";
+  x: number;
+  y: number;
+  height: number;
+  width: number;
+};
+
 export type ResourcePage = {
   _id: string;
   _type: "resourcePage";
@@ -45,13 +86,6 @@ export type ResourcePage = {
     _type: "resourceItem";
     _key: string;
   }>;
-};
-
-export type SanityImageAssetReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
 };
 
 export type HomepageSettings = {
@@ -92,22 +126,6 @@ export type HomepageSettings = {
     _type: "newsItem";
     _key: string;
   }>;
-};
-
-export type SanityImageCrop = {
-  _type: "sanity.imageCrop";
-  top: number;
-  bottom: number;
-  left: number;
-  right: number;
-};
-
-export type SanityImageHotspot = {
-  _type: "sanity.imageHotspot";
-  x: number;
-  y: number;
-  height: number;
-  width: number;
 };
 
 export type SanityImagePaletteSwatch = {
@@ -214,11 +232,12 @@ export type Slug = {
 };
 
 export type AllSanitySchemaTypes =
-  | ResourcePage
   | SanityImageAssetReference
-  | HomepageSettings
+  | ResearchPage
   | SanityImageCrop
   | SanityImageHotspot
+  | ResourcePage
+  | HomepageSettings
   | SanityImagePaletteSwatch
   | SanityImagePalette
   | SanityImageDimensions
@@ -266,6 +285,22 @@ export type HOME_PAGE_SETTINGS_QUERY_RESULT = {
   }> | null;
 } | null;
 
+// Source: src/sanity/queries/researchPage.ts
+// Variable: RESEARCH_PAGE_QUERY
+// Query: *[    _id == "researchPage" &&    _type == "researchPage"  ][0]{    title,    intro,    formUrl,    image  }
+export type RESEARCH_PAGE_QUERY_RESULT = {
+  title: string;
+  intro: string;
+  formUrl: string;
+  image: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  } | null;
+} | null;
+
 // Source: src/sanity/queries/resourcePage.ts
 // Variable: RESOURCE_PAGE_QUERY
 // Query: *[    _type == "resourcePage" &&    _id == $id  ][0]{    title,    subtitle,    resources[]{      _key,      content    }  }
@@ -300,6 +335,7 @@ import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     '\n  *[\n    _id == "homepageSettings" &&\n    _type == "homepageSettings"\n  ][0]{\n    title,\n    introText,\n    newsTitle,\n    logo,\n    news[]{\n      _key,\n      content\n    }\n  }\n': HOME_PAGE_SETTINGS_QUERY_RESULT;
+    '\n  *[\n    _id == "researchPage" &&\n    _type == "researchPage"\n  ][0]{\n    title,\n    intro,\n    formUrl,\n    image\n  }\n': RESEARCH_PAGE_QUERY_RESULT;
     '\n  *[\n    _type == "resourcePage" &&\n    _id == $id\n  ][0]{\n    title,\n    subtitle,\n    resources[]{\n      _key,\n      content\n    }\n  }\n': RESOURCE_PAGE_QUERY_RESULT;
   }
 }

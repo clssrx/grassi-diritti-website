@@ -29,6 +29,13 @@ export const structure: StructureResolver = (S) =>
         ),
 
       S.listItem()
+        .title("Ricerca")
+        .id("researchPage")
+        .child(
+          S.document().schemaType("researchPage").documentId("researchPage"),
+        ),
+
+      S.listItem()
         .title("Risorse")
         .id("resources")
         .child(
@@ -48,6 +55,8 @@ export const structure: StructureResolver = (S) =>
 
       ...S.documentTypeListItems().filter(
         (item) =>
-          !["homepageSettings", "resourcePage"].includes(item.getId() ?? ""),
+          !["homepageSettings", "researchPage", "resourcePage"].includes(
+            item.getId() ?? "",
+          ),
       ),
     ]);
