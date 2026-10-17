@@ -29,6 +29,7 @@ export default function DesktopNavbar({
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
   const dropdownRef = useRef<HTMLLIElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (!openDropdown) return;
@@ -46,6 +47,7 @@ export default function DesktopNavbar({
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setOpenDropdown(null);
+        triggerRef.current?.focus();
       }
     };
 
@@ -59,19 +61,21 @@ export default function DesktopNavbar({
   }, [openDropdown]);
 
   return (
-    <div className="hidden md:block py-2">
+    <div className="hidden bg-background py-2 md:block">
       {/* Main navbar */}
-      <nav className="mx-auto flex max-h-fit max-w-7xl items-center">
+      <nav
+        aria-label="Navigazione principale"
+        className="mx-auto flex max-h-fit max-w-7xl items-center"
+      >
         {!isHome && (
-          <Link href="/" className="whitespace-nowrap font-bold text-heading">
-            <div className="flex flex-row justify-center items-center gap-2">
-              <Image
-                src={"/logo-grassi-diritti.png"}
-                alt="logo grassi diritti"
-                width={50}
-                height={50}
-              />
-            </div>
+          <Link href="/" aria-label="Grassi Diritti, homepage">
+            <Image
+              src="/logo-grassi-diritti.png"
+              alt=""
+              width={1080}
+              height={1350}
+              className="h-[50px] w-auto"
+            />
           </Link>
         )}
 
@@ -84,19 +88,29 @@ export default function DesktopNavbar({
                 key={navLink.slug}
                 className="relative flex h-full items-center"
                 ref={navLink.children ? dropdownRef : undefined}
+                onBlur={(event) => {
+                  if (
+                    navLink.children &&
+                    !event.currentTarget.contains(event.relatedTarget as Node)
+                  ) {
+                    setOpenDropdown(null);
+                  }
+                }}
               >
                 {navLink.children ? (
                   <>
                     <button
+                      ref={triggerRef}
                       type="button"
                       className={`flex items-center text-xl pl-2 py-2 hover:bg-[#ff82cf] hover:underline cursor-pointer ${
                         isDropdownOpen || navLink.isActive
-                          ? "gd-pink-bg "
+                          ? "gd-pink-bg"
                           : "bg-transparent"
-                      } 
+                      } ${navLink.isActive ? "underline decoration-[#171717] underline-offset-4" : ""}
                     
                       `}
                       aria-expanded={isDropdownOpen}
+                      aria-controls={`${navLink.slug}-desktop-submenu`}
                       onClick={() =>
                         setOpenDropdown((current) =>
                           current === navLink.slug ? null : navLink.slug,
@@ -130,32 +144,37 @@ export default function DesktopNavbar({
                       </span>
                     </button>
 
-                    {isDropdownOpen && (
-                      <div className="absolute left-full top-14 z-20 flex w-max -translate-x-1/2 flex-col items-start gap-2 p-3 gd-pink-bg  shadow-lg">
-                        {navLink.children.map((child) => (
-                          <div
-                            key={child.slug}
-                            className="flex flex-row gap-2 items-center"
+                    <ul
+                      id={`${navLink.slug}-desktop-submenu`}
+                      className={`absolute right-0 top-full z-20 w-max flex-col gap-2 p-3 gd-pink-bg shadow-lg ${isDropdownOpen ? "flex" : "hidden"}`}
+                    >
+                      {navLink.children.map((child) => (
+                        <li
+                          key={child.slug}
+                          className={`flex items-center gap-2 ${child.isActive ? "gd-pink-bg" : ""}`}
+                        >
+                          <span aria-hidden="true">✸</span>
+                          <Link
+                            href={`/${navLink.slug}/${child.slug}`}
+                            className={`text-lg hover:underline ${child.isActive ? "underline  decoration-[#171717] underline-offset-4" : ""}`}
+                            aria-current={child.isActive ? "page" : undefined}
+                            onClick={() => setOpenDropdown(null)}
                           >
-                            <span>✸</span>
-                            <Link
-                              href={`/${navLink.slug}/${child.slug}`}
-                              className={`text-lg hover:underline ${child.isActive ? "font-bold" : ""}`}
-                              onClick={() => setOpenDropdown(null)}
-                            >
-                              {child.text}
-                            </Link>
-                          </div>
-                        ))}
-                      </div>
-                    )}
+                            {child.text}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
                   </>
                 ) : (
                   <Link
                     href={`/${navLink.slug}`}
                     className={`text-xl p-2 hover:bg-[#ff82cf] hover:underline ${
-                      navLink.isActive ? "gd-pink-bg " : "bg-transparent"
+                      navLink.isActive
+                        ? "gd-pink-bg underline decoration-[#171717] underline-offset-4"
+                        : "bg-transparent"
                     }`}
+                    aria-current={navLink.isActive ? "page" : undefined}
                     onClick={() => setOpenDropdown(null)}
                   >
                     {navLink.text}

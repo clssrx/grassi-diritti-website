@@ -1,3 +1,5 @@
+import { PageHeader, PageLayout } from "@/components/PageLayout";
+
 const archiveData = {
   2026: [
     { id: 0, text: "Licheni Festival 2026" },
@@ -73,12 +75,8 @@ const subtitle =
 
 export default function ArchivioPage() {
   return (
-    <main className="flex flex-col gap-6 max-w-6xl mx-auto py-8 md:gap-14 md:py-8">
-      <header className="flex flex-col gap-5">
-        <h1 className="text-3xl md:text-6xl font-bold">{title}</h1>
-
-        <p className="text-xl sm:text-2xl">{subtitle}</p>
-      </header>
+    <PageLayout>
+      <PageHeader title={title} subtitle={subtitle} />
 
       {Object.entries(archiveData).map(([year, items]) => (
         <section key={year} className="flex flex-col gap-6">
@@ -93,7 +91,7 @@ export default function ArchivioPage() {
                 className="text-xl sm:text-2xl border-b-2 border-(--color-salmon-pink-gd) p-2"
               >
                 <div className="flex flex-row text-xl sm:text-2xl leading-relaxed gap-4">
-                  <span>✸</span>
+                  <span aria-hidden="true">✸</span>
                   <span>{item.text}</span>
                 </div>
               </li>
@@ -101,6 +99,6 @@ export default function ArchivioPage() {
           </ul>
         </section>
       ))}
-    </main>
+    </PageLayout>
   );
 }

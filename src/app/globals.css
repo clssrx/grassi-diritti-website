@@ -1,14 +1,10 @@
 @import "tailwindcss";
 
+/* Site palette */
 :root {
   --background: #ffe5f5;
   --foreground: #171717;
-  --foreground-inverse: #f7f0f4;
-  --background-inverse: #171717;
-
   --navbar: #eeffdb;
-  --accent: #c8b6ff;
-
   --color-green-gd: #c5f1b4;
   --color-pink-gd: #ff82cf;
   --color-salmon-pink-gd: #f67bab;
@@ -17,36 +13,34 @@
   --color-paper: #f6eee3;
 }
 
+/* Tailwind theme tokens */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-  --color-background-inverse: var(--background-inverse);
-  --color-foreground-inverse: var(--foreground-inverse);
-
   --color-navbar: var(--navbar);
 }
 
-/* @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-} */
-
+/* Base page styles */
 body {
-  background: var(--color-background);
+  background-color: var(--color-background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
 
-header,
-nav,
-footer {
-  background: inherit;
+/* Mobile navigation open state */
+@media (max-width: 767px) {
+  body.mobile-menu-open {
+    background-color: var(--navbar);
+  }
+
+  body.mobile-menu-open header {
+    background-color: var(--navbar);
+  }
 }
 
+/* Brand background helpers */
 .gd-pink-bg {
   background-color: var(--color-pink-gd);
 }
@@ -55,6 +49,7 @@ footer {
   background-color: var(--color-green-gd);
 }
 
+/* Keyboard focus and selected text */
 :focus-visible {
   outline: 2px solid var(--color-dark-pink-gd);
   outline-offset: 4px;
