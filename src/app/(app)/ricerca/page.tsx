@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
+import { PageHeader, PageLayout } from "@/components/PageLayout";
 import { urlFor } from "@/sanity/lib/image";
 import { getResearchPageQuery } from "@/sanity/queries/researchPage";
 
@@ -16,14 +17,8 @@ export default async function RicercaPage() {
     : "/ricerca-submission-form.png";
 
   return (
-    <main className="mx-auto flex w-full max-w-6xl flex-col gap-6 py-8 md:gap-14">
-      <header className="flex flex-col gap-5">
-        <h1 className="text-3xl font-bold leading-tight md:text-6xl">
-          {data.title}
-        </h1>
-
-        <p className="text-xl leading-relaxed sm:text-2xl">{data.intro}</p>
-      </header>
+    <PageLayout>
+      <PageHeader title={data.title} subtitle={data.intro} />
 
       <div className="mx-auto w-full max-w-4xl">
         <a
@@ -42,6 +37,6 @@ export default async function RicercaPage() {
           />
         </a>
       </div>
-    </main>
+    </PageLayout>
   );
 }

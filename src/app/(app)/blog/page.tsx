@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import { PageHeader, PageLayout } from "@/components/PageLayout";
+
 const articles = [
   {
     date: "1",
@@ -42,10 +44,8 @@ const articles = [
 
 export default function BlogPage() {
   return (
-    <main className="flex flex-col gap-6 max-w-6xl mx-auto py-8 md:gap-14 md:py-8">
-      <header className="flex flex-col gap-5">
-        <h1 className="text-3xl md:text-6xl font-bold">Blog</h1>
-      </header>
+    <PageLayout>
+      <PageHeader title="Blog" />
 
       <section className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 justify-between">
         {articles.map((article) => (
@@ -56,7 +56,7 @@ export default function BlogPage() {
           />
         ))}
       </section>
-    </main>
+    </PageLayout>
   );
 }
 

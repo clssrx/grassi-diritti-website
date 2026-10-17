@@ -1,5 +1,6 @@
 import type { RESOURCE_PAGE_QUERY_RESULT } from "@/sanity/types";
 
+import { PageHeader, PageLayout } from "./PageLayout";
 import { ResourcePortableText } from "./ResourcePortableText";
 
 type ResourcePageProps = {
@@ -11,14 +12,8 @@ export function ResourcePage({ data, resourcesTitle }: ResourcePageProps) {
   const { title, subtitle, resources } = data;
 
   return (
-    <main className="mx-auto flex w-full max-w-6xl flex-col gap-10 py-8 md:gap-14">
-      <header className="flex flex-col gap-5">
-        <h1 className="text-3xl font-bold leading-tight md:text-6xl">
-          {title}
-        </h1>
-
-        <p className="text-xl leading-relaxed sm:text-2xl">{subtitle}</p>
-      </header>
+    <PageLayout>
+      <PageHeader title={title} subtitle={subtitle} />
 
       {resources?.length ? (
         <section
@@ -47,6 +42,6 @@ export function ResourcePage({ data, resourcesTitle }: ResourcePageProps) {
           </ul>
         </section>
       ) : null}
-    </main>
+    </PageLayout>
   );
 }
