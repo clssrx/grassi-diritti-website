@@ -18,7 +18,7 @@ export default function BlogPostPage() {
             <PageHeader title={title}>
               <div className="flex flex-row items-center gap-4">
                 <span className="text-sm md:text-lg">22/02/2026</span>
-                <span>✸</span>
+                <span aria-hidden="true">✸</span>
                 <span className="text-sm md:text-lg">Autorx</span>
               </div>
             </PageHeader>

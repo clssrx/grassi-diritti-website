@@ -75,6 +75,7 @@ function BlogPost({ title, slug }: BlogPostProps) {
       <Link
         href={`/blog/${slug}`}
         className="p-2 bg-(--color-pink-gd) hover:bg-(--color-green-gd) self-end shadow-sm"
+        aria-label={`Leggi il post: ${title}`}
       >
         Leggi il post!
       </Link>

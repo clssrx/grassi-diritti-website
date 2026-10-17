@@ -19,20 +19,26 @@ export default function ContattiPage() {
       <section>
         <ul className="flex flex-col px-6 gap-8">
           <li className="flex flex-row text-xl sm:text-2xl leading-relaxed gap-4">
-            <span>✸</span>
+            <span aria-hidden="true">✸</span>
             <span>
               Scrivici una mail a{" "}
-              <Link href={`mailto:${mail}`} className="font-bold">
+              <Link
+                href={`mailto:${mail}`}
+                className="font-bold underline underline-offset-4"
+              >
                 {mail}
               </Link>
             </span>
           </li>
 
           <li className="flex flex-row text-xl sm:text-2xl leading-relaxed gap-4">
-            <span>✸</span>
+            <span aria-hidden="true">✸</span>
             <span>
               Segui il nostro profilo Instagram{" "}
-              <Link href={instagram.link} className="font-bold">
+              <Link
+                href={instagram.link}
+                className="font-bold underline underline-offset-4"
+              >
                 {instagram.username}
               </Link>
             </span>

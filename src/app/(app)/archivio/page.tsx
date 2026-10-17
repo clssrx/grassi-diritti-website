@@ -91,7 +91,7 @@ export default function ArchivioPage() {
                 className="text-xl sm:text-2xl border-b-2 border-(--color-salmon-pink-gd) p-2"
               >
                 <div className="flex flex-row text-xl sm:text-2xl leading-relaxed gap-4">
-                  <span>✸</span>
+                  <span aria-hidden="true">✸</span>
                   <span>{item.text}</span>
                 </div>
               </li>
