@@ -22,5 +22,6 @@ export async function getHomePageSettingsQuery() {
   return await client.fetch<HOME_PAGE_SETTINGS_QUERY_RESULT>(
     HOME_PAGE_SETTINGS_QUERY,
     {},
+    { next: { tags: ["homepageSettings"] } },
   );
 }

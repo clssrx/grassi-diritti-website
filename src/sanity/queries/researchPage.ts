@@ -21,5 +21,6 @@ export async function getResearchPageQuery() {
   return await client.fetch<RESEARCH_PAGE_QUERY_RESULT>(
     RESEARCH_PAGE_QUERY,
     {},
+    { next: { tags: ["researchPage"] } },
   );
 }

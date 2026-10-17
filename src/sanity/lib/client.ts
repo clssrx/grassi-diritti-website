@@ -6,5 +6,6 @@ export const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: true, // Set to false if statically generating pages, using ISR or tag-based revalidation
+  // Revalidated queries must bypass Sanity's CDN to avoid returning stale data.
+  useCdn: false,
 })
