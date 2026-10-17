@@ -1,20 +1,19 @@
-import Link from "next/link";
+import { notFound } from "next/navigation";
 
 import { PageHeader, PageLayout } from "@/components/PageLayout";
 
-const title = "Contatti";
-const subtitle = "Vuoi contattare o collaborare con Grassi Diritti?";
+import { getContactPageQuery } from "@/sanity/queries/contactPage";
 
-const mail = "grassidiritti@distruzione.org";
-const instagram = {
-  link: "https://www.instagram.com/grassidiritti/",
-  username: "@grassidiritti",
-};
+export default async function ContattiPage() {
+  const data = await getContactPageQuery();
 
-export default function ContattiPage() {
+  if (!data) {
+    notFound();
+  }
+
   return (
     <PageLayout>
-      <PageHeader title={title} subtitle={subtitle} />
+      <PageHeader title={data.title} subtitle={data.intro} />
 
       <section>
         <ul className="flex flex-col px-6 gap-8">
@@ -22,12 +21,12 @@ export default function ContattiPage() {
             <span aria-hidden="true">✸</span>
             <span>
               Scrivici una mail a{" "}
-              <Link
-                href={`mailto:${mail}`}
+              <a
+                href={`mailto:${data.emailAddress}`}
                 className="font-bold underline underline-offset-4"
               >
-                {mail}
-              </Link>
+                {data.emailAddress}
+              </a>
             </span>
           </li>
 
@@ -35,12 +34,12 @@ export default function ContattiPage() {
             <span aria-hidden="true">✸</span>
             <span>
               Segui il nostro profilo Instagram{" "}
-              <Link
-                href={instagram.link}
+              <a
+                href={data.instagramUrl}
                 className="font-bold underline underline-offset-4"
               >
-                {instagram.username}
-              </Link>
+                {data.instagramUsername}
+              </a>
             </span>
           </li>
         </ul>

@@ -15,6 +15,19 @@
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
 // Source: src/sanity/extract.json
+export type ContactPage = {
+  _id: string;
+  _type: "contactPage";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  intro: string;
+  emailAddress: string;
+  instagramUrl: string;
+  instagramUsername: string;
+};
+
 export type SanityImageAssetReference = {
   _ref: string;
   _type: "reference";
@@ -232,6 +245,7 @@ export type Slug = {
 };
 
 export type AllSanitySchemaTypes =
+  | ContactPage
   | SanityImageAssetReference
   | ResearchPage
   | SanityImageCrop
@@ -247,6 +261,17 @@ export type AllSanitySchemaTypes =
   | SanityImageAsset
   | Geopoint
   | Slug;
+
+// Source: src/sanity/queries/contactPage.ts
+// Variable: CONTACT_PAGE_QUERY
+// Query: *[    _id == "contactPage" &&    _type == "contactPage"  ][0]{    title,    intro,    emailAddress,    instagramUrl,    instagramUsername  }
+export type CONTACT_PAGE_QUERY_RESULT = {
+  title: string;
+  intro: string;
+  emailAddress: string;
+  instagramUrl: string;
+  instagramUsername: string;
+} | null;
 
 // Source: src/sanity/queries/homePage.ts
 // Variable: HOME_PAGE_SETTINGS_QUERY
@@ -334,6 +359,7 @@ export type RESOURCE_PAGE_QUERY_RESULT = {
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
+    '\n  *[\n    _id == "contactPage" &&\n    _type == "contactPage"\n  ][0]{\n    title,\n    intro,\n    emailAddress,\n    instagramUrl,\n    instagramUsername\n  }\n': CONTACT_PAGE_QUERY_RESULT;
     '\n  *[\n    _id == "homepageSettings" &&\n    _type == "homepageSettings"\n  ][0]{\n    title,\n    introText,\n    newsTitle,\n    logo,\n    news[]{\n      _key,\n      content\n    }\n  }\n': HOME_PAGE_SETTINGS_QUERY_RESULT;
     '\n  *[\n    _id == "researchPage" &&\n    _type == "researchPage"\n  ][0]{\n    title,\n    intro,\n    formUrl,\n    image\n  }\n': RESEARCH_PAGE_QUERY_RESULT;
     '\n  *[\n    _type == "resourcePage" &&\n    _id == $id\n  ][0]{\n    title,\n    subtitle,\n    resources[]{\n      _key,\n      content\n    }\n  }\n': RESOURCE_PAGE_QUERY_RESULT;
