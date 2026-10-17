@@ -24,11 +24,11 @@ export function ResourcePage({ data, resourcesTitle }: ResourcePageProps) {
             {resourcesTitle}
           </h2>
 
-          <ul className="flex w-full flex-col gap-8">
+          <ul className="ml-2 flex w-full flex-col gap-8 pl-4 sm:ml-4 sm:pl-6">
             {resources.map((resource) => (
               <li
                 key={resource._key}
-                className="grid w-full grid-cols-[auto_minmax(0,1fr)] gap-4 text-xl leading-relaxed sm:text-2xl"
+                className="grid w-full grid-cols-[auto_minmax(0,1fr)] gap-4 border-b-2 border-(--color-salmon-pink-gd) pb-6 text-xl leading-relaxed last:border-b-0 sm:text-2xl"
               >
                 <span aria-hidden="true" className="pt-1">
                   ✸
