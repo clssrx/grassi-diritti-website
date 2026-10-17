@@ -1,98 +1,43 @@
+import { notFound } from "next/navigation";
+
 import { PageHeader, PageLayout } from "@/components/PageLayout";
+import { ResourcePortableText } from "@/components/ResourcePortableText";
+import { getArchivePageQuery } from "@/sanity/queries/archivePage";
 
-const archiveData = {
-  2026: [
-    { id: 0, text: "Licheni Festival 2026" },
-    { id: 1, text: "Ultragender Camp - Agape Centro Ecumenico 2026" },
-    {
-      id: 2,
-      text: "Partecipato alla 12a Weight Stigma Conference ad Oslo, Norvegia",
-    },
-    {
-      id: 3,
-      text: "Primo Grosso Grasso Festival in collaborazione con Lucha Y Siesta",
-    },
-    { id: 4, text: "Laboratoria Grassa a Trieste" },
-    {
-      id: 5,
-      text: "Pubblicato il report su Aborto e Grassezza con Aborto in Pillole e Women Help Women",
-    },
-    {
-      id: 6,
-      text: "Parlato in piazza a Novara e a Bologna durante il giorno internazionale per i diritti delle donne",
-    },
-    { id: 7, text: "Partecipato al primo convegno italiano inclusivo al peso" },
-  ],
-  2025: [
-    { id: 0, text: "Licheni Festival 2026" },
-    { id: 1, text: "Ultragender Camp - Agape Centro Ecumenico 2026" },
-    {
-      id: 2,
-      text: "Partecipato alla 12a Weight Stigma Conference ad Oslo, Norvegia",
-    },
-    {
-      id: 3,
-      text: "Primo Grosso Grasso Festival in collaborazione con Lucha Y Siesta",
-    },
-    { id: 4, text: "Laboratoria Grassa a Trieste" },
-    {
-      id: 5,
-      text: "Pubblicato il report su Aborto e Grassezza con Aborto in Pillole e Women Help Women",
-    },
-    {
-      id: 6,
-      text: "Parlato in piazza a Novara e a Bologna durante il giorno internazionale per i diritti delle donne",
-    },
-    { id: 7, text: "Partecipato al primo convegno italiano inclusivo al peso" },
-  ],
-  2024: [
-    { id: 0, text: "Licheni Festival 2026" },
-    { id: 1, text: "Ultragender Camp - Agape Centro Ecumenico 2026" },
-    {
-      id: 2,
-      text: "Partecipato alla 12a Weight Stigma Conference ad Oslo, Norvegia",
-    },
-    {
-      id: 3,
-      text: "Primo Grosso Grasso Festival in collaborazione con Lucha Y Siesta",
-    },
-    { id: 4, text: "Laboratoria Grassa a Trieste" },
-    {
-      id: 5,
-      text: "Pubblicato il report su Aborto e Grassezza con Aborto in Pillole e Women Help Women",
-    },
-    {
-      id: 6,
-      text: "Parlato in piazza a Novara e a Bologna durante il giorno internazionale per i diritti delle donne",
-    },
-    { id: 7, text: "Partecipato al primo convegno italiano inclusivo al peso" },
-  ],
-};
+export default async function ArchivioPage() {
+  const data = await getArchivePageQuery();
 
-const title = "Archivio";
-const subtitle =
-  "In questa pagina puoi trovare l'elenco degli eventi che abbiamo organizzato o ai quali siamo state ospiti. L'obiettivo è mantenere un archivio storico per documentare la nostra parte di storia della comunità grassa italiana.";
+  if (!data) {
+    notFound();
+  }
 
-export default function ArchivioPage() {
   return (
     <PageLayout>
-      <PageHeader title={title} subtitle={subtitle} />
+      <PageHeader title={data.title} subtitle={data.intro} />
 
-      {Object.entries(archiveData).map(([year, items]) => (
-        <section key={year} className="flex flex-col gap-6">
-          <h2 className="text-3xl font-bold bg-(--color-green-gd) max-w-fit p-2">
+      {data.years?.map(({ _key, year, entries }) => (
+        <section key={_key} className="flex flex-col gap-6">
+          <h2 className="max-w-fit bg-(--color-green-gd) p-2 text-3xl font-bold">
             {year}
           </h2>
 
-          <ul className="flex flex-col px-10 gap-4">
-            {items.map((item) => (
+          <ul className="flex flex-col gap-4 px-10">
+            {entries?.map((entry) => (
               <li
-                key={item.id}
-                className="text-xl sm:text-2xl border-b-2 border-(--color-salmon-pink-gd) p-2"
+                key={entry._key}
+                className="border-b-2 border-(--color-salmon-pink-gd) p-2 text-xl sm:text-2xl"
               >
-                <div className="flex flex-row text-xl sm:text-2xl leading-relaxed gap-4">
+                <div className="flex flex-row gap-4 leading-relaxed">
                   <span aria-hidden="true">✸</span>
-                  <span>{item.text}</span>
+                  <div className="min-w-0">
+                    <ResourcePortableText
+                      value={entry.content.map((block) => ({
+                        ...block,
+                        children: block.children ?? [],
+                        markDefs: block.markDefs ?? [],
+                      }))}
+                    />
+                  </div>
                 </div>
               </li>
             ))}

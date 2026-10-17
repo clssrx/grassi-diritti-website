@@ -35,7 +35,13 @@ export function ResourcePage({ data, resourcesTitle }: ResourcePageProps) {
                 </span>
 
                 <div className="min-w-0">
-                  <ResourcePortableText value={resource.content ?? []} />
+                  <ResourcePortableText
+                    value={resource.content.map((block) => ({
+                      ...block,
+                      children: block.children ?? [],
+                      markDefs: block.markDefs ?? [],
+                    }))}
+                  />
                 </div>
               </li>
             ))}
