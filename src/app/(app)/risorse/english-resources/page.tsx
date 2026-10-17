@@ -10,5 +10,9 @@ export default async function EnglishResourcesPage() {
     notFound();
   }
 
-  return <ResourcePage data={data} resourcesTitle="Resources list:" />;
+  return (
+    <div lang="en">
+      <ResourcePage data={data} resourcesTitle="Resources list:" />
+    </div>
+  );
 }
