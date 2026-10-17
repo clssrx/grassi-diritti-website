@@ -33,26 +33,19 @@ export default function Navbar() {
   const pathname = usePathname();
   const isHome = pathname === "/";
 
-  const navLinksList = navLinks.map((navLink) => {
-    if (navLink.children) {
-      navLink.children = navLink.children.map((child) => {
-        return {
-          ...child,
-          isActive: pathname.includes(child.slug),
-        };
-      });
-    }
-
-    return {
-      ...navLink,
-      isActive:
-        pathname === `/${navLink.slug}` ||
-        pathname.startsWith(`/${navLink.slug}/`),
-    };
-  });
+  const navLinksList = navLinks.map((navLink) => ({
+    ...navLink,
+    children: navLink.children?.map((child) => ({
+      ...child,
+      isActive: pathname.includes(child.slug),
+    })),
+    isActive:
+      pathname === `/${navLink.slug}` ||
+      pathname.startsWith(`/${navLink.slug}/`),
+  }));
 
   return (
-    <header className="sticky top-0 z-50">
+    <header className="sticky top-0 z-50 isolate bg-background">
       <MobileNavbar isHome={isHome} navLinks={navLinksList} />
       <DesktopNavbar isHome={isHome} navLinks={navLinksList} />
     </header>

@@ -1,8 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 
 type NavChild = {
   slug: string;
@@ -25,6 +25,30 @@ type MobileNavbarProps = {
 export default function MobileNavbar({ isHome, navLinks }: MobileNavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    document.body.classList.toggle("mobile-menu-open", isOpen);
+
+    return () => {
+      document.body.classList.remove("mobile-menu-open");
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsOpen(false);
+        setOpenDropdown(null);
+        menuButtonRef.current?.focus();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen]);
 
   const closeMenu = () => {
     setIsOpen(false);
@@ -32,25 +56,29 @@ export default function MobileNavbar({ isHome, navLinks }: MobileNavbarProps) {
   };
 
   return (
-    <nav className="flex h-16 items-center px-6 md:hidden">
+    <nav
+      aria-label="Navigazione principale"
+      className={`flex h-16 items-center px-6 md:hidden ${isOpen ? "bg-navbar" : "bg-background"}`}
+    >
       {!isHome && !isOpen && (
-        <Link href="/" className="whitespace-nowrap " onClick={closeMenu}>
-          <div className="flex flex-row justify-center items-center gap-2">
-            <Image
-              src={"/logo-grassi-diritti.png"}
-              alt="logo grassi diritti"
-              width={50}
-              height={50}
-            />
-          </div>
+        <Link href="/" aria-label="Grassi Diritti, homepage">
+          <Image
+            src="/logo-grassi-diritti.png"
+            alt=""
+            width={1080}
+            height={1350}
+            className="h-[50px] w-auto"
+          />
         </Link>
       )}
 
       <button
+        ref={menuButtonRef}
         type="button"
         className="ml-auto flex min-h-11 min-w-11 items-center justify-center"
         aria-label={isOpen ? "Chiudi menu" : "Apri menu"}
         aria-expanded={isOpen}
+        aria-controls="mobile-primary-navigation"
         onClick={() => {
           setIsOpen((open) => !open);
 
@@ -84,85 +112,94 @@ export default function MobileNavbar({ isHome, navLinks }: MobileNavbarProps) {
         </svg>
       </button>
 
-      {isOpen && (
-        <ul className="fixed inset-x-0 bottom-0 top-14 overflow-y-auto bg-inherit px-4 py-5  mobile-navbar">
-          {navLinks.map((navLink) => {
-            const isDropdownOpen = openDropdown === navLink.slug;
+      <ul
+        id="mobile-primary-navigation"
+        className={`fixed inset-x-0 bottom-0 top-16 overflow-y-auto bg-navbar px-4 py-5 mobile-navbar ${isOpen ? "block" : "hidden"}`}
+      >
+        {navLinks.map((navLink) => {
+          const isDropdownOpen = openDropdown === navLink.slug;
 
-            return (
-              <li key={navLink.slug} className="">
-                {navLink.children ? (
-                  <>
-                    <button
-                      type="button"
-                      className={`flex min-h-14 w-full items-center gap-2 px-5 py-4 text-left text-3xl ${
-                        navLink.isActive ? "gd-acid-green-bg" : "bg-transparent"
-                      }`}
-                      aria-expanded={isDropdownOpen}
-                      onClick={() =>
-                        setOpenDropdown((current) =>
-                          current === navLink.slug ? null : navLink.slug,
-                        )
-                      }
-                    >
-                      <span>{navLink.text}</span>
-
-                      <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        className={`h-6 w-6 transition-transform duration-200 gd-pink-bg ${
-                          isDropdownOpen ? "rotate-180" : ""
-                        }`}
-                        aria-hidden="true"
-                      >
-                        <path
-                          d="m6 9 6 6 6-6"
-                          strokeWidth="2"
-                          strokeLinecap="square"
-                          strokeLinejoin="miter"
-                        />
-                      </svg>
-                    </button>
-
-                    {isDropdownOpen && (
-                      <ul className="flex flex-col ml-10 mb-4 max-w-fit gap-4 gd-pink-bg p-2">
-                        {navLink.children.map((child) => (
-                          <li
-                            key={child.slug}
-                            className="flex flex-row  items-start text-2xl gap-2"
-                          >
-                            <span>✸</span>
-                            <Link
-                              href={`/${navLink.slug}/${child.slug}`}
-                              className={` ${child.isActive ? "font-bold" : "bg-transparent"}`}
-                              onClick={closeMenu}
-                            >
-                              {child.text}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </>
-                ) : (
-                  <Link
-                    href={`/${navLink.slug}`}
-                    className={`block min-h-14 px-5 py-4 text-3xl ${
+          return (
+            <li key={navLink.slug} className="">
+              {navLink.children ? (
+                <>
+                  <button
+                    type="button"
+                    className={`flex min-h-14 w-full items-center gap-2 px-5 py-4 text-left text-3xl ${
                       navLink.isActive
-                        ? "gd-acid-green-bg underline"
+                        ? "gd-acid-green-bg underline underline-offset-4"
                         : "bg-transparent"
                     }`}
-                    onClick={closeMenu}
+                    aria-expanded={isDropdownOpen}
+                    aria-controls={`${navLink.slug}-mobile-submenu`}
+                    onClick={() =>
+                      setOpenDropdown((current) =>
+                        current === navLink.slug ? null : navLink.slug,
+                      )
+                    }
                   >
-                    {navLink.text}
-                  </Link>
-                )}
-              </li>
-            );
-          })}
-        </ul>
-      )}
+                    <span>{navLink.text}</span>
+
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      className={`h-6 w-6 transition-transform duration-200 gd-pink-bg ${
+                        isDropdownOpen ? "rotate-180" : ""
+                      }`}
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="m6 9 6 6 6-6"
+                        strokeWidth="2"
+                        strokeLinecap="square"
+                        strokeLinejoin="miter"
+                      />
+                    </svg>
+                  </button>
+
+                  <ul
+                    id={`${navLink.slug}-mobile-submenu`}
+                    className={`ml-10 mb-4 max-w-fit flex-col gap-4 gd-pink-bg p-2 ${isDropdownOpen ? "flex" : "hidden"}`}
+                  >
+                    {navLink.children.map((child) => (
+                      <li
+                        key={child.slug}
+                        className="flex items-start gap-2 text-2xl"
+                      >
+                        <span aria-hidden="true">✸</span>
+                        <Link
+                          href={`/${navLink.slug}/${child.slug}`}
+                          className={
+                            child.isActive ? "underline underline-offset-4" : ""
+                          }
+                          aria-current={child.isActive ? "page" : undefined}
+                          onClick={closeMenu}
+                        >
+                          {child.text}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              ) : (
+                <Link
+                  href={`/${navLink.slug}`}
+                  className={`block min-h-14 px-5 py-4 text-3xl ${
+                    navLink.isActive
+                      ? "gd-acid-green-bg underline underline-offset-4"
+                      : "bg-transparent"
+                  }`}
+                  aria-current={navLink.isActive ? "page" : undefined}
+                  onClick={closeMenu}
+                >
+                  {navLink.text}
+                </Link>
+              )}
+            </li>
+          );
+        })}
+      </ul>
     </nav>
   );
 }
