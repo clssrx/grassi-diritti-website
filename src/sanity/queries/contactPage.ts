@@ -17,5 +17,7 @@ const CONTACT_PAGE_QUERY = defineQuery(`
 `);
 
 export async function getContactPageQuery() {
-  return await client.fetch<CONTACT_PAGE_QUERY_RESULT>(CONTACT_PAGE_QUERY, {});
+  return await client.fetch<CONTACT_PAGE_QUERY_RESULT>(CONTACT_PAGE_QUERY, {}, {
+    next: { tags: ["contactPage"] },
+  });
 }

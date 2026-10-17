@@ -20,5 +20,5 @@ const RESOURCE_PAGE_QUERY = defineQuery(`
 export async function getResourcePageQuery(id: string) {
   return await client.fetch<RESOURCE_PAGE_QUERY_RESULT>(RESOURCE_PAGE_QUERY, {
     id,
-  });
+  }, { next: { tags: ["resourcePage"] } });
 }
