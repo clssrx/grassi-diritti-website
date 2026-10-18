@@ -8,6 +8,8 @@ type SanityWebhookPayload = {
 
 const REVALIDATABLE_TYPES = new Set([
   "archivePage",
+  "blogAuthor",
+  "blogPost",
   "contactPage",
   "homepageSettings",
   "researchPage",

@@ -1,54 +1,87 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
+import { BlogPostBody } from "@/components/BlogPostBody";
 import { PageHeader, PageLayout } from "@/components/PageLayout";
+import { SanityImage } from "@/components/SanityImage";
+import { formatBlogDate } from "@/lib/formatBlogDate";
+import { getBlogPostQuery } from "@/sanity/queries/blogPost";
 
-const title =
-  "Appropriazione del linguaggio anti-stigma da parte di case farmaceutiche e ob*soliog3";
+type BlogPostPageProps = {
+  params: Promise<{ slug: string }>;
+};
 
-export default function BlogPostPage() {
+export async function generateMetadata({
+  params,
+}: BlogPostPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const post = await getBlogPostQuery(slug);
+
+  if (!post) {
+    return {};
+  }
+
+  return {
+    title: post.title,
+    description: post.excerpt,
+  };
+}
+
+export default async function BlogPostPage({ params }: BlogPostPageProps) {
+  const { slug } = await params;
+  const post = await getBlogPostQuery(slug);
+
+  if (!post) {
+    notFound();
+  }
+
   return (
     <PageLayout>
       <div className="flex flex-col gap-6 md:gap-8">
-        <Link href="/blog" className="hover:underline">
-          {"← Torna a tutti i post"}
+        <Link
+          href="/blog"
+          className="w-fit underline-offset-4 hover:underline focus-visible:underline"
+        >
+          ← Torna a tutti i post
         </Link>
 
-        <article>
-          <div className="flex flex-col bg-(--color-paper) p-6 md:p-10 border gap-4 md:gap-8 ">
-            <PageHeader title={title}>
-              <div className="flex flex-row items-center gap-4">
-                <span className="text-sm md:text-lg">22/02/2026</span>
-                <span aria-hidden="true">✸</span>
-                <span className="text-sm md:text-lg">Autorx</span>
-              </div>
-            </PageHeader>
+        <article className="border bg-(--color-paper)">
+          <div className="flex flex-col gap-6 p-6 sm:gap-8 sm:p-10">
+            <div className="[&>header]:items-center [&>header>h1]:w-full [&>header>h1]:text-center [&>header>div]:justify-center">
+              <PageHeader title={post.title}>
+                <div className="flex flex-wrap items-center gap-3 text-sm sm:gap-4 sm:text-lg">
+                  <time dateTime={post.publishedAt}>
+                    {formatBlogDate(post.publishedAt)}
+                  </time>
+                  {post.author?.name ? (
+                    <>
+                      <span aria-hidden="true">✸</span>
+                      <span> {post.author.name}</span>
+                    </>
+                  ) : null}
+                </div>
+              </PageHeader>
+            </div>
 
-            <div className="w-full h-50 md:h-100 border"></div>
+            {post.coverImage ? (
+              <figure>
+                <SanityImage
+                  value={post.coverImage}
+                  sizes="(max-width: 1024px) 100vw, 1152px"
+                  className="h-auto max-h-[70vh] w-full object-cover"
+                />
+                {post.coverImage.caption ? (
+                  <figcaption className="mt-2 text-sm leading-relaxed sm:text-base">
+                    {post.coverImage.caption}
+                  </figcaption>
+                ) : null}
+              </figure>
+            ) : null}
 
-            <p className="text-justify text-md md:text-xl max-w-4xl mx-auto">
-              Lorem ipsum dolor sit amet. Sit doloribus doloribus eum possimus
-              rerum id illum omnis sit dolorum rerum ut itaque quaerat aut
-              aliquam voluptate aut doloribus commodi. Sed perferendis eius qui
-              adipisci possimus aut optio natus ut adipisci fugiat et possimus
-              voluptatem a earum fuga. Eum inventore sint aut voluptate sapiente
-              a nobis totam ea omnis dolor. Eos rerum inventore ut voluptatem
-              galisum aut dolorem ipsa qui atque corporis aut incidunt alias id
-              explicabo labore. Eum dicta similique cum delectus ullam ea
-              dolores assumenda et voluptatem doloremque. Id autem suscipit et
-              ipsa quisquam qui minus praesentium. Et magnam dolores a error
-              iusto id totam odio eum voluptates velit. Lorem ipsum dolor sit
-              amet. Sit doloribus doloribus eum possimus rerum id illum omnis
-              sit dolorum rerum ut itaque quaerat aut aliquam voluptate aut
-              doloribus commodi. Sed perferendis eius qui adipisci possimus aut
-              optio natus ut adipisci fugiat et possimus voluptatem a earum
-              fuga. Eum inventore sint aut voluptate sapiente a nobis totam ea
-              omnis dolor. Eos rerum inventore ut voluptatem galisum aut dolorem
-              ipsa qui atque corporis aut incidunt alias id explicabo labore.
-              Eum dicta similique cum delectus ullam ea dolores assumenda et
-              voluptatem doloremque. Id autem suscipit et ipsa quisquam qui
-              minus praesentium. Et magnam dolores a error iusto id totam odio
-              eum voluptates velit.
-            </p>
+            <div className="mx-auto w-full max-w-3xl text-lg leading-relaxed sm:text-xl">
+              <BlogPostBody value={post.body ?? []} />
+            </div>
           </div>
         </article>
       </div>
