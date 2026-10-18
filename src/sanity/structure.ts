@@ -60,6 +60,18 @@ export const structure: StructureResolver = (S) =>
             ),
         ),
 
+      S.listItem()
+        .title("Blog")
+        .id("blog")
+        .child(
+          S.list()
+            .title("Blog")
+            .items([
+              S.documentTypeListItem("blogPost").title("Articoli"),
+              S.documentTypeListItem("blogAuthor").title("Autor3"),
+            ]),
+        ),
+
       ...S.documentTypeListItems().filter(
         (item) =>
           ![
@@ -67,6 +79,8 @@ export const structure: StructureResolver = (S) =>
             "researchPage",
             "contactPage",
             "resourcePage",
+            "blogPost",
+            "blogAuthor",
           ].includes(item.getId() ?? ""),
       ),
     ]);

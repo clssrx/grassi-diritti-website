@@ -101,6 +101,82 @@ export type ResourcePage = {
   }>;
 };
 
+export type BlogAuthorReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "blogAuthor";
+};
+
+export type BlogPost = {
+  _id: string;
+  _type: "blogPost";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  slug: Slug;
+  publishedAt: string;
+  author: BlogAuthorReference;
+  excerpt: string;
+  coverImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    decorative?: boolean;
+    caption?: string;
+    _type: "image";
+  };
+  body: Array<
+    | {
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?: "normal" | "h2" | "h3" | "blockquote";
+        listItem?: "bullet" | "number";
+        markDefs?: Array<{
+          href: string;
+          _type: "link";
+          _key: string;
+        }>;
+        level?: number;
+        _type: "block";
+        _key: string;
+      }
+    | {
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        decorative?: boolean;
+        caption?: string;
+        _type: "articleImage";
+        _key: string;
+      }
+  >;
+};
+
+export type Slug = {
+  _type: "slug";
+  current: string;
+  source?: string;
+};
+
+export type BlogAuthor = {
+  _id: string;
+  _type: "blogAuthor";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  name: string;
+};
+
 export type HomepageSettings = {
   _id: string;
   _type: "homepageSettings";
@@ -238,12 +314,6 @@ export type Geopoint = {
   alt?: number;
 };
 
-export type Slug = {
-  _type: "slug";
-  current: string;
-  source?: string;
-};
-
 export type AllSanitySchemaTypes =
   | ContactPage
   | SanityImageAssetReference
@@ -251,6 +321,10 @@ export type AllSanitySchemaTypes =
   | SanityImageCrop
   | SanityImageHotspot
   | ResourcePage
+  | BlogAuthorReference
+  | BlogPost
+  | Slug
+  | BlogAuthor
   | HomepageSettings
   | SanityImagePaletteSwatch
   | SanityImagePalette
@@ -259,8 +333,110 @@ export type AllSanitySchemaTypes =
   | SanityFileAsset
   | SanityAssetSourceData
   | SanityImageAsset
-  | Geopoint
-  | Slug;
+  | Geopoint;
+
+// Source: src/sanity/queries/blogPost.ts
+// Variable: BLOG_POSTS_QUERY
+// Query: *[    _type == "blogPost" &&    defined(slug.current) &&    defined(publishedAt)  ] | order(publishedAt desc){    _id,    title,    "slug": slug.current,    publishedAt,    excerpt,    author->{name},    coverImage{      ...,      asset->{_id, metadata{dimensions{width, height}}}    }  }
+export type BLOG_POSTS_QUERY_RESULT = Array<{
+  _id: string;
+  title: string;
+  slug: string;
+  publishedAt: string;
+  excerpt: string;
+  author: {
+    name: string;
+  };
+  coverImage: {
+    asset: {
+      _id: string;
+      metadata: {
+        dimensions: {
+          width: number;
+          height: number;
+        } | null;
+      } | null;
+    } | null;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    decorative?: boolean;
+    caption?: string;
+    _type: "image";
+  } | null;
+}>;
+
+// Source: src/sanity/queries/blogPost.ts
+// Variable: BLOG_POST_QUERY
+// Query: *[    _type == "blogPost" &&    slug.current == $slug &&    defined(publishedAt)  ][0]{    _id,    title,    "slug": slug.current,    publishedAt,    excerpt,    author->{name},    coverImage{      ...,      asset->{_id, metadata{dimensions{width, height}}}    },    body[]{      ...,      _type == "articleImage" => {        ...,        asset->{_id, metadata{dimensions{width, height}}}      }    }  }
+export type BLOG_POST_QUERY_RESULT = {
+  _id: string;
+  title: string;
+  slug: string;
+  publishedAt: string;
+  excerpt: string;
+  author: {
+    name: string;
+  };
+  coverImage: {
+    asset: {
+      _id: string;
+      metadata: {
+        dimensions: {
+          width: number;
+          height: number;
+        } | null;
+      } | null;
+    } | null;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    decorative?: boolean;
+    caption?: string;
+    _type: "image";
+  } | null;
+  body: Array<
+    | {
+        asset: {
+          _id: string;
+          metadata: {
+            dimensions: {
+              width: number;
+              height: number;
+            } | null;
+          } | null;
+        } | null;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        decorative?: boolean;
+        caption?: string;
+        _type: "articleImage";
+        _key: string;
+      }
+    | {
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?: "blockquote" | "h2" | "h3" | "normal";
+        listItem?: "bullet" | "number";
+        markDefs?: Array<{
+          href: string;
+          _type: "link";
+          _key: string;
+        }>;
+        level?: number;
+        _type: "block";
+        _key: string;
+      }
+  >;
+} | null;
 
 // Source: src/sanity/queries/contactPage.ts
 // Variable: CONTACT_PAGE_QUERY
@@ -359,6 +535,8 @@ export type RESOURCE_PAGE_QUERY_RESULT = {
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
+    '\n  *[\n    _type == "blogPost" &&\n    defined(slug.current) &&\n    defined(publishedAt)\n  ] | order(publishedAt desc){\n    _id,\n    title,\n    "slug": slug.current,\n    publishedAt,\n    excerpt,\n    author->{name},\n    coverImage{\n      ...,\n      asset->{_id, metadata{dimensions{width, height}}}\n    }\n  }\n': BLOG_POSTS_QUERY_RESULT;
+    '\n  *[\n    _type == "blogPost" &&\n    slug.current == $slug &&\n    defined(publishedAt)\n  ][0]{\n    _id,\n    title,\n    "slug": slug.current,\n    publishedAt,\n    excerpt,\n    author->{name},\n    coverImage{\n      ...,\n      asset->{_id, metadata{dimensions{width, height}}}\n    },\n    body[]{\n      ...,\n      _type == "articleImage" => {\n        ...,\n        asset->{_id, metadata{dimensions{width, height}}}\n      }\n    }\n  }\n': BLOG_POST_QUERY_RESULT;
     '\n  *[\n    _id == "contactPage" &&\n    _type == "contactPage"\n  ][0]{\n    title,\n    intro,\n    emailAddress,\n    instagramUrl,\n    instagramUsername\n  }\n': CONTACT_PAGE_QUERY_RESULT;
     '\n  *[\n    _id == "homepageSettings" &&\n    _type == "homepageSettings"\n  ][0]{\n    title,\n    introText,\n    newsTitle,\n    logo,\n    news[]{\n      _key,\n      content\n    }\n  }\n': HOME_PAGE_SETTINGS_QUERY_RESULT;
     '\n  *[\n    _id == "researchPage" &&\n    _type == "researchPage"\n  ][0]{\n    title,\n    intro,\n    formUrl,\n    image\n  }\n': RESEARCH_PAGE_QUERY_RESULT;
