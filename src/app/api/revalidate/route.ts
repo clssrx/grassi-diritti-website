@@ -1,4 +1,4 @@
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { type NextRequest, NextResponse } from "next/server";
 import { parseBody } from "next-sanity/webhook";
 
@@ -47,6 +47,12 @@ export async function POST(request: NextRequest) {
   }
 
   revalidateTag(body._type, { expire: 0 });
+
+  // The blog index is a statically rendered route; invalidate it explicitly
+  // when a post changes so its card image is refreshed on the next request.
+  if (body._type === "blogPost") {
+    revalidatePath("/blog");
+  }
 
   return NextResponse.json({ revalidated: true, type: body._type });
 }
