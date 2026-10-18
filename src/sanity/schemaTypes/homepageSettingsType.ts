@@ -22,6 +22,34 @@ export const homepageSettingsType = defineType({
       name: "logo",
       title: "Logo del sito",
       type: "image",
+      fields: [
+        defineField({
+          name: "alt",
+          title: "Testo alternativo",
+          type: "string",
+          description:
+            "Descrivi l'immagine. Se ripete il titolo o non aggiunge informazioni, seleziona l'opzione decorativa.",
+          hidden: ({ parent }) => Boolean(parent?.decorative),
+          validation: (rule) =>
+            rule.custom((value, context) => {
+              const parent = context.parent as
+                | { decorative?: boolean }
+                | undefined;
+              return parent?.decorative ||
+                (typeof value === "string" && value.trim().length > 0)
+                ? true
+                : "Inserisci un testo alternativo o indica che l'immagine è decorativa.";
+            }),
+        }),
+        defineField({
+          name: "decorative",
+          title: "Immagine decorativa",
+          type: "boolean",
+          initialValue: false,
+          description:
+            "Attiva se l'immagine non aggiunge informazioni e può essere ignorata da chi usa uno screen reader.",
+        }),
+      ],
     }),
 
     defineField({

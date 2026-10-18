@@ -227,6 +227,8 @@ export type HomepageSettings = {
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
+    alt?: string;
+    decorative?: boolean;
     _type: "image";
   };
   newsTitle?: string;
@@ -532,6 +534,8 @@ export type HOME_PAGE_SETTINGS_QUERY_RESULT = {
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
+    alt?: string;
+    decorative?: boolean;
     _type: "image";
   } | null;
   news: Array<{
