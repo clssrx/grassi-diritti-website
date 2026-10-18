@@ -26,6 +26,7 @@ const portableTextComponents: PortableTextComponents = {
             className="underline"
           >
             {children}
+            <span className="sr-only"> (si apre in una nuova scheda)</span>
           </a>
         );
       }
@@ -58,20 +59,22 @@ export default async function Home() {
     <main className="flex flex-col gap-10 py-8 sm:py-16">
       <section className="grid gap-4 sm:gap-8 md:grid-cols-[minmax(0,1fr)_auto] md:max-w-7xl">
         <div>
-          <h1 className="line-clamp-2 text-[clamp(3.5rem,16vw,9rem)] font-semibold leading-[0.8] tracking-[-0.065em]">
+          <h1 className="text-[clamp(3.5rem,10vw,9rem)] font-semibold leading-[0.9] tracking-[-0.045em]">
             {title}
           </h1>
 
-          <p className="mt-7 max-w-7xl text-xl leading-[1.15] tracking-[-0.02em] sm:text-2xl md:mt-10 md:text-3xl lg:text-4xl">
+          <p className="mt-7 max-w-7xl text-xl leading-normal tracking-[-0.02em] sm:text-2xl sm:leading-[1.2] md:mt-10 md:text-3xl md:leading-[1.15] lg:text-4xl">
             {introText}
           </p>
         </div>
 
         {logoUrl && (
-          <div className="w-30 justify-self-end sm:w-32 md:w-32 md:justify-self-start lg:w-53 xl:w-60">
+          <div className="w-24 justify-self-end sm:w-28 md:w-40 md:justify-self-start lg:w-56 xl:w-64">
             <Image
               src={logoUrl}
-              alt="grassi diritti logo"
+              alt={
+                logo?.decorative ? "" : (logo?.alt ?? "Logo di Grassi Diritti")
+              }
               width={300}
               height={300}
               className="h-auto w-full rounded"
@@ -91,11 +94,13 @@ export default async function Home() {
             {news.map((item) => (
               <li
                 key={item._key}
-                className="flex flex-row gap-4 text-xl md:text-2xl"
+                className="flex flex-row items-start gap-4 text-xl leading-relaxed md:text-2xl"
               >
-                <span aria-hidden="true">✸</span>
+                <span aria-hidden="true" className="mt-1 shrink-0">
+                  ✸
+                </span>
 
-                <div>
+                <div className="min-w-0 flex-1">
                   <PortableText
                     value={item.content ?? []}
                     components={portableTextComponents}

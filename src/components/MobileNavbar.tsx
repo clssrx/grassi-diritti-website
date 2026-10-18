@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 type NavChild = {
@@ -18,11 +17,10 @@ type NavLink = {
 };
 
 type MobileNavbarProps = {
-  isHome: boolean;
   navLinks: NavLink[];
 };
 
-export default function MobileNavbar({ isHome, navLinks }: MobileNavbarProps) {
+export default function MobileNavbar({ navLinks }: MobileNavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
@@ -58,20 +56,8 @@ export default function MobileNavbar({ isHome, navLinks }: MobileNavbarProps) {
   return (
     <nav
       aria-label="Navigazione principale"
-      className={`flex h-16 items-center px-6 md:hidden ${isOpen ? "bg-navbar" : "bg-background"}`}
+      className={`mobile-navbar-shell flex h-16 items-center px-6 md:hidden ${isOpen ? "bg-navbar" : "bg-background"}`}
     >
-      {!isHome && !isOpen && (
-        <Link href="/" aria-label="Grassi Diritti, homepage">
-          <Image
-            src="/logo-grassi-diritti.png"
-            alt=""
-            width={1080}
-            height={1350}
-            className="h-[50px] w-auto"
-          />
-        </Link>
-      )}
-
       <button
         ref={menuButtonRef}
         type="button"
