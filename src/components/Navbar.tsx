@@ -5,33 +5,33 @@ import DesktopNavbar from "./DesktopNavbar";
 import MobileNavbar from "./MobileNavbar";
 
 export const navLinks = [
+  { slug: "", text: "home" },
   {
     slug: "risorse",
-    text: "Risorse",
+    text: "risorse",
     children: [
       {
         slug: "risorse-per-persone-grasse",
-        text: "Per persone grasse",
+        text: "per persone grasse",
       },
       {
         slug: "risorse-per-professionisty-della-salute",
-        text: "Per professionisty della salute",
+        text: "per professionisty della salute",
       },
       {
         slug: "english-resources",
-        text: "[EN] Resources",
+        text: "[en] resources",
       },
     ],
   },
-  { slug: "blog", text: "Blog" },
-  { slug: "ricerca", text: "Ricerca" },
-  { slug: "archivio", text: "Archivio" },
-  { slug: "contatti", text: "Contatti" },
+  { slug: "blog", text: "blog" },
+  { slug: "ricerca", text: "ricerca" },
+  { slug: "archivio", text: "archivio" },
+  { slug: "contatti", text: "contatti" },
 ];
 
 export default function Navbar() {
   const pathname = usePathname();
-  const isHome = pathname === "/";
 
   const navLinksList = navLinks.map((navLink) => ({
     ...navLink,
@@ -39,15 +39,16 @@ export default function Navbar() {
       ...child,
       isActive: pathname.includes(child.slug),
     })),
-    isActive:
-      pathname === `/${navLink.slug}` ||
-      pathname.startsWith(`/${navLink.slug}/`),
+    isActive: navLink.slug
+      ? pathname === `/${navLink.slug}` ||
+        pathname.startsWith(`/${navLink.slug}/`)
+      : pathname === "/",
   }));
 
   return (
     <header className="sticky top-0 z-50 isolate bg-background">
-      <MobileNavbar isHome={isHome} navLinks={navLinksList} />
-      <DesktopNavbar isHome={isHome} navLinks={navLinksList} />
+      <MobileNavbar navLinks={navLinksList} />
+      <DesktopNavbar navLinks={navLinksList} />
     </header>
   );
 }

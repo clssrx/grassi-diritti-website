@@ -1361,6 +1361,20 @@
               },
               "optional": true
             },
+            "alt": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string"
+              },
+              "optional": true
+            },
+            "decorative": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "boolean"
+              },
+              "optional": true
+            },
             "_type": {
               "type": "objectAttribute",
               "value": {

@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 type NavChild = {
@@ -18,14 +17,10 @@ type NavLink = {
 };
 
 type DesktopNavbarProps = {
-  isHome: boolean;
   navLinks: NavLink[];
 };
 
-export default function DesktopNavbar({
-  isHome,
-  navLinks,
-}: DesktopNavbarProps) {
+export default function DesktopNavbar({ navLinks }: DesktopNavbarProps) {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
   const dropdownRef = useRef<HTMLLIElement>(null);
@@ -65,20 +60,8 @@ export default function DesktopNavbar({
       {/* Main navbar */}
       <nav
         aria-label="Navigazione principale"
-        className="mx-auto flex max-h-fit max-w-7xl items-center"
+        className="mx-auto flex w-full max-h-fit max-w-7xl items-center px-6 sm:px-4"
       >
-        {!isHome && (
-          <Link href="/" aria-label="Grassi Diritti, homepage">
-            <Image
-              src="/logo-grassi-diritti.png"
-              alt=""
-              width={1080}
-              height={1350}
-              className="h-[50px] w-auto"
-            />
-          </Link>
-        )}
-
         <ul className="ml-auto flex h-full items-center gap-2 font-medium">
           {navLinks.map((navLink) => {
             const isDropdownOpen = openDropdown === navLink.slug;
@@ -156,7 +139,7 @@ export default function DesktopNavbar({
                           <span aria-hidden="true">✸</span>
                           <Link
                             href={`/${navLink.slug}/${child.slug}`}
-                            className={`text-lg hover:underline ${child.isActive ? "underline  decoration-[#171717] underline-offset-4" : ""}`}
+                            className={`navbar-pink-focus text-lg hover:underline ${child.isActive ? "underline  decoration-[#171717] underline-offset-4" : ""}`}
                             aria-current={child.isActive ? "page" : undefined}
                             onClick={() => setOpenDropdown(null)}
                           >
