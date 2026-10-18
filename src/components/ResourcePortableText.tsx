@@ -5,8 +5,6 @@ import {
 } from "@portabletext/react";
 import Link from "next/link";
 
-import type { RESOURCE_PAGE_QUERY_RESULT } from "@/sanity/types";
-
 const linkClasses =
   "font-medium underline underline-offset-4 " +
   "hover:decoration-2 " +
@@ -56,21 +54,10 @@ const components: PortableTextComponents = {
   },
 };
 
-type Resource = NonNullable<
-  NonNullable<RESOURCE_PAGE_QUERY_RESULT>["resources"]
->[number];
-
-type ResourceContent = NonNullable<Resource["content"]>;
-
 type ResourcePortableTextProps = {
-  value: ResourceContent;
+  value: PortableTextBlock[];
 };
 
 export function ResourcePortableText({ value }: ResourcePortableTextProps) {
-  return (
-    <PortableText
-      value={value as PortableTextBlock[]}
-      components={components}
-    />
-  );
+  return <PortableText value={value} components={components} />;
 }

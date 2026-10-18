@@ -43,6 +43,13 @@ export const structure: StructureResolver = (S) =>
         ),
 
       S.listItem()
+        .title("Archivio")
+        .id("archivePage")
+        .child(
+          S.document().schemaType("archivePage").documentId("archivePage"),
+        ),
+
+      S.listItem()
         .title("Risorse")
         .id("resources")
         .child(
@@ -66,6 +73,7 @@ export const structure: StructureResolver = (S) =>
             "homepageSettings",
             "researchPage",
             "contactPage",
+            "archivePage",
             "resourcePage",
           ].includes(item.getId() ?? ""),
       ),
