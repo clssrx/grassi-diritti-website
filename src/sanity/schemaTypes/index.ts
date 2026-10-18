@@ -1,5 +1,6 @@
 import { type SchemaTypeDefinition } from "sanity";
 
+import { archivePageType } from "./archivePageType";
 import { contactPageType } from "./contactPageType";
 import { blogAuthorType } from "./blogAuthorType";
 import { blogPostType } from "./blogPostType";
@@ -15,5 +16,6 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     resourcePageType,
     researchPageType,
     contactPageType,
+    archivePageType,
   ],
 };

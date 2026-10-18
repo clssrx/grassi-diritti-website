@@ -1,104 +1,77 @@
+import { notFound } from "next/navigation";
+
 import { PageHeader, PageLayout } from "@/components/PageLayout";
+import { ResourcePortableText } from "@/components/ResourcePortableText";
+import { getArchivePageQuery } from "@/sanity/queries/archivePage";
 
-const archiveData = {
-  2026: [
-    { id: 0, text: "Licheni Festival 2026" },
-    { id: 1, text: "Ultragender Camp - Agape Centro Ecumenico 2026" },
-    {
-      id: 2,
-      text: "Partecipato alla 12a Weight Stigma Conference ad Oslo, Norvegia",
-    },
-    {
-      id: 3,
-      text: "Primo Grosso Grasso Festival in collaborazione con Lucha Y Siesta",
-    },
-    { id: 4, text: "Laboratoria Grassa a Trieste" },
-    {
-      id: 5,
-      text: "Pubblicato il report su Aborto e Grassezza con Aborto in Pillole e Women Help Women",
-    },
-    {
-      id: 6,
-      text: "Parlato in piazza a Novara e a Bologna durante il giorno internazionale per i diritti delle donne",
-    },
-    { id: 7, text: "Partecipato al primo convegno italiano inclusivo al peso" },
-  ],
-  2025: [
-    { id: 0, text: "Licheni Festival 2026" },
-    { id: 1, text: "Ultragender Camp - Agape Centro Ecumenico 2026" },
-    {
-      id: 2,
-      text: "Partecipato alla 12a Weight Stigma Conference ad Oslo, Norvegia",
-    },
-    {
-      id: 3,
-      text: "Primo Grosso Grasso Festival in collaborazione con Lucha Y Siesta",
-    },
-    { id: 4, text: "Laboratoria Grassa a Trieste" },
-    {
-      id: 5,
-      text: "Pubblicato il report su Aborto e Grassezza con Aborto in Pillole e Women Help Women",
-    },
-    {
-      id: 6,
-      text: "Parlato in piazza a Novara e a Bologna durante il giorno internazionale per i diritti delle donne",
-    },
-    { id: 7, text: "Partecipato al primo convegno italiano inclusivo al peso" },
-  ],
-  2024: [
-    { id: 0, text: "Licheni Festival 2026" },
-    { id: 1, text: "Ultragender Camp - Agape Centro Ecumenico 2026" },
-    {
-      id: 2,
-      text: "Partecipato alla 12a Weight Stigma Conference ad Oslo, Norvegia",
-    },
-    {
-      id: 3,
-      text: "Primo Grosso Grasso Festival in collaborazione con Lucha Y Siesta",
-    },
-    { id: 4, text: "Laboratoria Grassa a Trieste" },
-    {
-      id: 5,
-      text: "Pubblicato il report su Aborto e Grassezza con Aborto in Pillole e Women Help Women",
-    },
-    {
-      id: 6,
-      text: "Parlato in piazza a Novara e a Bologna durante il giorno internazionale per i diritti delle donne",
-    },
-    { id: 7, text: "Partecipato al primo convegno italiano inclusivo al peso" },
-  ],
-};
+export default async function ArchivioPage() {
+  const data = await getArchivePageQuery();
 
-const title = "Archivio";
-const subtitle =
-  "In questa pagina puoi trovare l'elenco degli eventi che abbiamo organizzato o ai quali siamo state ospiti. L'obiettivo è mantenere un archivio storico per documentare la nostra parte di storia della comunità grassa italiana.";
+  if (!data) {
+    notFound();
+  }
 
-export default function ArchivioPage() {
   return (
     <PageLayout>
-      <PageHeader title={title} subtitle={subtitle} />
+      <PageHeader title={data.title} subtitle={data.intro} />
 
-      {Object.entries(archiveData).map(([year, items]) => (
-        <section key={year} className="flex flex-col gap-6">
-          <h2 className="text-3xl font-bold bg-(--color-green-gd) max-w-fit p-2">
-            {year}
-          </h2>
+      {data.years?.map(({ _key, year, entries }, index) => {
+        const entryCount = entries?.length ?? 0;
 
-          <ul className="flex flex-col px-10 gap-4">
-            {items.map((item) => (
-              <li
-                key={item.id}
-                className="text-xl sm:text-2xl border-b-2 border-(--color-salmon-pink-gd) p-2"
+        return (
+          <details
+            key={_key}
+            open={index === 0}
+            className="group border-b-2 border-(--color-salmon-pink-gd) open:border-b-0"
+          >
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-5 text-3xl marker:hidden focus-visible:outline-offset-2 sm:py-6 md:text-4xl">
+              <span
+                role="heading"
+                aria-level={2}
+                className="flex items-center gap-4"
               >
-                <div className="flex flex-row text-xl sm:text-2xl leading-relaxed gap-4">
-                  <span aria-hidden="true">✸</span>
-                  <span>{item.text}</span>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </section>
-      ))}
+                <span className="bg-(--color-green-gd) p-2 font-bold">
+                  {year}
+                </span>
+              </span>
+              <span className="flex shrink-0 items-center gap-3 text-sm text-current/70 sm:text-base">
+                <span>
+                  {entryCount} {entryCount === 1 ? "voce" : "voci"}
+                </span>
+                <span
+                  aria-hidden="true"
+                  title="Espandi o comprimi l’anno"
+                  className="text-3xl text-(--color-dark-pink-gd) transition-transform duration-200 group-open:rotate-45"
+                >
+                  ✸
+                </span>
+              </span>
+            </summary>
+
+            <ul className="ml-2 mt-2 flex flex-col gap-2 pb-6 pl-4 sm:ml-4 sm:gap-4 sm:pl-6">
+              {entries?.map((entry) => (
+                <li
+                  key={entry._key}
+                  className="border-b-2 border-(--color-salmon-pink-gd) p-2 text-xl leading-relaxed last:border-b-0 sm:text-2xl"
+                >
+                  <div className="flex flex-row gap-4 leading-relaxed">
+                    <span aria-hidden="true">✸</span>
+                    <div className="min-w-0">
+                      <ResourcePortableText
+                        value={entry.content.map((block) => ({
+                          ...block,
+                          children: block.children ?? [],
+                          markDefs: block.markDefs ?? [],
+                        }))}
+                      />
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </details>
+        );
+      })}
     </PageLayout>
   );
 }

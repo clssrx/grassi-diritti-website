@@ -15,6 +15,43 @@
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
 // Source: src/sanity/extract.json
+export type ArchivePage = {
+  _id: string;
+  _type: "archivePage";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  intro: string;
+  years: Array<{
+    year: number;
+    entries: Array<{
+      content: Array<{
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?: "normal";
+        listItem?: "bullet";
+        markDefs?: Array<{
+          href: string;
+          _type: "link";
+          _key: string;
+        }>;
+        level?: number;
+        _type: "block";
+        _key: string;
+      }>;
+      _type: "archiveEntry";
+      _key: string;
+    }>;
+    _type: "archiveYear";
+    _key: string;
+  }>;
+};
+
 export type ContactPage = {
   _id: string;
   _type: "contactPage";
@@ -315,6 +352,7 @@ export type Geopoint = {
 };
 
 export type AllSanitySchemaTypes =
+  | ArchivePage
   | ContactPage
   | SanityImageAssetReference
   | ResearchPage
@@ -334,6 +372,39 @@ export type AllSanitySchemaTypes =
   | SanityAssetSourceData
   | SanityImageAsset
   | Geopoint;
+
+// Source: src/sanity/queries/archivePage.ts
+// Variable: ARCHIVE_PAGE_QUERY
+// Query: *[_type == "archivePage"] | order(_updatedAt desc)[0]{    title,    intro,    years | order(year desc)[]{      _key,      year,      entries[]{        _key,        content[]{          ...,          markDefs[]{...},          children[]{...}        }      }    }  }
+export type ARCHIVE_PAGE_QUERY_RESULT = {
+  title: string;
+  intro: string;
+  years: Array<{
+    _key: string;
+    year: number;
+    entries: Array<{
+      _key: string;
+      content: Array<{
+        children: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }> | null;
+        style?: "normal";
+        listItem?: "bullet";
+        markDefs: Array<{
+          href: string;
+          _type: "link";
+          _key: string;
+        }> | null;
+        level?: number;
+        _type: "block";
+        _key: string;
+      }>;
+    }>;
+  }>;
+} | null;
 
 // Source: src/sanity/queries/blogPost.ts
 // Variable: BLOG_POSTS_QUERY
@@ -535,6 +606,7 @@ export type RESOURCE_PAGE_QUERY_RESULT = {
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
+    '\n  *[_type == "archivePage"] | order(_updatedAt desc)[0]{\n    title,\n    intro,\n    years | order(year desc)[]{\n      _key,\n      year,\n      entries[]{\n        _key,\n        content[]{\n          ...,\n          markDefs[]{...},\n          children[]{...}\n        }\n      }\n    }\n  }\n': ARCHIVE_PAGE_QUERY_RESULT;
     '\n  *[\n    _type == "blogPost" &&\n    defined(slug.current) &&\n    defined(publishedAt)\n  ] | order(publishedAt desc){\n    _id,\n    title,\n    "slug": slug.current,\n    publishedAt,\n    excerpt,\n    author->{name},\n    coverImage{\n      ...,\n      asset->{_id, metadata{dimensions{width, height}}}\n    }\n  }\n': BLOG_POSTS_QUERY_RESULT;
     '\n  *[\n    _type == "blogPost" &&\n    slug.current == $slug &&\n    defined(publishedAt)\n  ][0]{\n    _id,\n    title,\n    "slug": slug.current,\n    publishedAt,\n    excerpt,\n    author->{name},\n    coverImage{\n      ...,\n      asset->{_id, metadata{dimensions{width, height}}}\n    },\n    body[]{\n      ...,\n      _type == "articleImage" => {\n        ...,\n        asset->{_id, metadata{dimensions{width, height}}}\n      }\n    }\n  }\n': BLOG_POST_QUERY_RESULT;
     '\n  *[\n    _id == "contactPage" &&\n    _type == "contactPage"\n  ][0]{\n    title,\n    intro,\n    emailAddress,\n    instagramUrl,\n    instagramUsername\n  }\n': CONTACT_PAGE_QUERY_RESULT;
