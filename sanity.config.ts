@@ -8,7 +8,11 @@ import { apiVersion, dataset, projectId } from "./src/sanity/env";
 import { schema } from "./src/sanity/schemaTypes";
 import { structure } from "./src/sanity/structure";
 
-const FIXED_DOCUMENT_TYPES = new Set(["homepageSettings", "resourcePage"]);
+const FIXED_DOCUMENT_TYPES = new Set([
+  "homepageSettings",
+  "resourcePage",
+  "privacyPage",
+]);
 
 const FIXED_DOCUMENT_ACTIONS = new Set([
   "publish",

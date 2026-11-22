@@ -15,6 +15,39 @@
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
 // Source: src/sanity/extract.json
+export type PrivacyPage = {
+  _id: string;
+  _type: "privacyPage";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  sections: Array<{
+    heading: string;
+    body: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "normal" | "h3";
+      listItem?: "bullet" | "number";
+      markDefs?: Array<{
+        href: string;
+        _type: "link";
+        _key: string;
+      }>;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }>;
+    _type: "privacySection";
+    _key: string;
+  }>;
+  updatedAt?: string;
+};
+
 export type ArchivePage = {
   _id: string;
   _type: "archivePage";
@@ -354,6 +387,7 @@ export type Geopoint = {
 };
 
 export type AllSanitySchemaTypes =
+  | PrivacyPage
   | ArchivePage
   | ContactPage
   | SanityImageAssetReference
@@ -561,6 +595,36 @@ export type HOME_PAGE_SETTINGS_QUERY_RESULT = {
   }> | null;
 } | null;
 
+// Source: src/sanity/queries/privacyPage.ts
+// Variable: PRIVACY_PAGE_QUERY
+// Query: *[_id == "privacyPage" && _type == "privacyPage"][0]{    title,    updatedAt,    sections[]{      _key,      heading,      body[]{        ...,        markDefs[]{...},        children[]{...}      }    }  }
+export type PRIVACY_PAGE_QUERY_RESULT = {
+  title: string;
+  updatedAt: string | null;
+  sections: Array<{
+    _key: string;
+    heading: string;
+    body: Array<{
+      children: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }> | null;
+      style?: "h3" | "normal";
+      listItem?: "bullet" | "number";
+      markDefs: Array<{
+        href: string;
+        _type: "link";
+        _key: string;
+      }> | null;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }>;
+  }>;
+} | null;
+
 // Source: src/sanity/queries/researchPage.ts
 // Variable: RESEARCH_PAGE_QUERY
 // Query: *[    _id == "researchPage" &&    _type == "researchPage"  ][0]{    title,    intro,    formUrl,    image  }
@@ -615,6 +679,7 @@ declare module "@sanity/client" {
     '\n  *[\n    _type == "blogPost" &&\n    slug.current == $slug &&\n    defined(publishedAt)\n  ][0]{\n    _id,\n    title,\n    "slug": slug.current,\n    publishedAt,\n    excerpt,\n    author->{name},\n    coverImage{\n      ...,\n      asset->{_id, metadata{dimensions{width, height}}}\n    },\n    body[]{\n      ...,\n      _type == "articleImage" => {\n        ...,\n        asset->{_id, metadata{dimensions{width, height}}}\n      }\n    }\n  }\n': BLOG_POST_QUERY_RESULT;
     '\n  *[\n    _id == "contactPage" &&\n    _type == "contactPage"\n  ][0]{\n    title,\n    intro,\n    emailAddress,\n    instagramUrl,\n    instagramUsername\n  }\n': CONTACT_PAGE_QUERY_RESULT;
     '\n  *[\n    _id == "homepageSettings" &&\n    _type == "homepageSettings"\n  ][0]{\n    title,\n    introText,\n    newsTitle,\n    logo,\n    news[]{\n      _key,\n      content\n    }\n  }\n': HOME_PAGE_SETTINGS_QUERY_RESULT;
+    '\n  *[_id == "privacyPage" && _type == "privacyPage"][0]{\n    title,\n    updatedAt,\n    sections[]{\n      _key,\n      heading,\n      body[]{\n        ...,\n        markDefs[]{...},\n        children[]{...}\n      }\n    }\n  }\n': PRIVACY_PAGE_QUERY_RESULT;
     '\n  *[\n    _id == "researchPage" &&\n    _type == "researchPage"\n  ][0]{\n    title,\n    intro,\n    formUrl,\n    image\n  }\n': RESEARCH_PAGE_QUERY_RESULT;
     '\n  *[\n    _type == "resourcePage" &&\n    _id == $id\n  ][0]{\n    title,\n    subtitle,\n    resources[]{\n      _key,\n      content\n    }\n  }\n': RESOURCE_PAGE_QUERY_RESULT;
   }

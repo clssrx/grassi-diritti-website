@@ -43,6 +43,15 @@ export const structure: StructureResolver = (S) =>
         ),
 
       S.listItem()
+        .title("Privacy & Cookies")
+        .id("privacyPage")
+        .child(
+          S.document()
+            .schemaType("privacyPage")
+            .documentId("privacyPage"),
+        ),
+
+      S.listItem()
         .title("Archivio")
         .id("archivePage")
         .child(
@@ -86,6 +95,7 @@ export const structure: StructureResolver = (S) =>
             "researchPage",
             "contactPage",
             "archivePage",
+            "privacyPage",
             "resourcePage",
             "blogPost",
             "blogAuthor",

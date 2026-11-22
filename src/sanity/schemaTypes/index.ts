@@ -7,6 +7,7 @@ import { blogPostType } from "./blogPostType";
 import { homepageSettingsType } from "./homepageSettingsType";
 import { resourcePageType } from "./resourcePageType";
 import { researchPageType } from "./researchPageType";
+import { privacyPageType } from "./privacyPageType";
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -17,5 +18,6 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     researchPageType,
     contactPageType,
     archivePageType,
+    privacyPageType,
   ],
 };
