@@ -12,6 +12,7 @@ const REVALIDATABLE_TYPES = new Set([
   "blogPost",
   "contactPage",
   "homepageSettings",
+  "privacyPage",
   "researchPage",
   "resourcePage",
 ]);
